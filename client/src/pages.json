@@ -1,0 +1,60 @@
+{
+  "easycom": {
+    "custom": {
+      "^u-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+      "^a-(.*)": "@/components/a/a-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index"
+    },
+    {
+      "path": "pages/mall/mall"
+    },
+    {
+      "path": "pages/forum/forum"
+    },
+    {
+      "path": "pages/mine/mine"
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#cdcdcd",
+    "selectedColor": "#000000",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "text": "发现",
+        "pagePath": "pages/index/index",
+        "iconPath": "./static/icon/tab-home-off.png",
+        "selectedIconPath": "./static/icon/tab-home.png"
+      },
+      {
+        "text": "市集",
+        "pagePath": "pages/mall/mall",
+        "iconPath": "./static/icon/tab-mall-off.png",
+        "selectedIconPath": "./static/icon/tab-mall.png"
+      },
+      {
+        "text": "宠圈",
+        "pagePath": "pages/forum/forum",
+        "iconPath": "./static/icon/tab-forum-off.png",
+        "selectedIconPath": "./static/icon/tab-forum.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/mine/mine",
+        "iconPath": "./static/icon/tab-mine-off.png",
+        "selectedIconPath": "./static/icon/tab-mine.png"
+      }
+    ]
+  }
+}

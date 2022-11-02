@@ -1,0 +1,16 @@
+// uview组件样式
+@import 'uview-plus/theme.scss';
+@import 'uview-plus/index.scss';
+
+// 主题样式
+$theme: #fff;
+$theme_back: #79a186;
+
+// 公共样式
+.content::before {
+  content: '';
+  display: block;
+  width: 750rpx;
+  height: 40rpx;
+  background-color: $theme_back;
+}
