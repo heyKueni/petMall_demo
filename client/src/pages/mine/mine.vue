@@ -3,11 +3,7 @@
     <view class="mine-header">
       <view class="mine-header-level">1级铲屎官</view>
       <view class="mine-header-name">狗蛋</view>
-      <image
-        class="mine-header-avatar"
-        src="../../static/icon/q-cat.png"
-        mode="aspectFit"
-      />
+      <image class="mine-header-avatar" :src="userAvatar" mode="aspectFit" />
     </view>
     <view class="mine-content-doc">
       <view class="mine-content-doc-header">
@@ -59,10 +55,9 @@ import { ref, reactive } from 'vue'
 import { storeToRefs } from 'pinia'
 import useStore from '@/store/index'
 
-// const { user } = useStore()
-// const { userAvatar } = storeToRefs(user)
-
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
+const { user } = useStore()
+const { userAvatar } = storeToRefs(user)
 const pageState = reactive({
   abilityList: [
     { key: 1, name: '我的发布', icon: '', path: '' },

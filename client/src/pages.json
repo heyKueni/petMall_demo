@@ -7,6 +7,9 @@
   },
   "pages": [
     {
+      "path": "pages/start/start"
+    },
+    {
       "path": "pages/index/index"
     },
     {
