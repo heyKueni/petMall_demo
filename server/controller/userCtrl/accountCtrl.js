@@ -1,10 +1,12 @@
-const userDao = require('../../modules/userDao/index')
+const userDao = require('../../dao/userDao/index')
 
 module.exports = {
   //   test
-  test: () => {
-    userDao.then((res) => {
-      console.log(res)
+  test: async (req, res) => {
+    const result = await userDao.test()
+    res.json({
+      code: 200,
+      data: result,
     })
   },
 }

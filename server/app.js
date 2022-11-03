@@ -38,7 +38,9 @@ app.use(function (err, req, res, next) {
 
 // server listen
 app.listen(5001, function () {
-  console.log('服务器已启动……')
+  console.log('服务器已启动')
+  console.log('------------------------------------')
+  console.log('正在监听中...')
 })
 
 module.exports = app
