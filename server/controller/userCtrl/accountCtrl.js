@@ -1,4 +1,4 @@
-const userDao = require('../../dao/userDao/index')
+const userDao = require('../../dao/userDao/accountDao')
 
 module.exports = {
   //   test

@@ -4,7 +4,7 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 
-var indexRouter = require('./routes/index')
+var indexRouter = require('./router/index')
 
 var app = express()
 
@@ -38,9 +38,8 @@ app.use(function (err, req, res, next) {
 
 // server listen
 app.listen(5001, function () {
-  console.log('服务器已启动')
-  console.log('------------------------------------')
-  console.log('正在监听中...')
+  console.log('服务器正在启动>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+  console.log('开始监听...')
 })
 
 module.exports = app
