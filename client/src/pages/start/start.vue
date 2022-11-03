@@ -20,8 +20,9 @@
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
-import { onReady } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
+
+const { page } = useStore()
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const pageState = reactive({

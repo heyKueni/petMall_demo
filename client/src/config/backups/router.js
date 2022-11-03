@@ -1,5 +1,5 @@
 // 状态管理
-import store from '../store'
+import store from '../../store'
 // router白名单
 const whiteList = [
   '/pages/start/start',

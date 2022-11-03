@@ -10,6 +10,9 @@
       "path": "pages/start/start"
     },
     {
+      "path": "pages/login/login"
+    },
+    {
       "path": "pages/index/index"
     },
     {
@@ -20,6 +23,9 @@
     },
     {
       "path": "pages/mine/mine"
+    },
+    {
+      "path": "pages/mineChild/set/set"
     }
   ],
   "globalStyle": {

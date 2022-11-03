@@ -3,7 +3,11 @@
     <view class="mine-header">
       <view class="mine-header-level">1级铲屎官</view>
       <view class="mine-header-name">狗蛋</view>
-      <image class="mine-header-avatar" :src="userAvatar" mode="aspectFit" />
+      <image
+        class="mine-header-avatar"
+        :src="user.userAvatar"
+        mode="aspectFit"
+      />
     </view>
     <view class="mine-content-doc">
       <view class="mine-content-doc-header">
@@ -39,6 +43,7 @@
         class="ability-item"
         v-for="item in pageState.abilityList"
         :key="item.key"
+        @tap="item.routerTo"
       >
         <image
           class="ability-item-icon"
@@ -51,22 +56,81 @@
   </view>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, getCurrentInstance } from 'vue'
 import { storeToRefs } from 'pinia'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const { user } = useStore()
-const { userAvatar } = storeToRefs(user)
+const { proxy } = getCurrentInstance()
+
 const pageState = reactive({
   abilityList: [
-    { key: 1, name: '我的发布', icon: '', path: '' },
-    { key: 2, name: '我的收藏', icon: '', path: '' },
-    { key: 3, name: '我的聊天', icon: '', path: '' },
-    { key: 4, name: '我的钱包', icon: '', path: '' },
-    { key: 5, name: '打卡签到', icon: '', path: '' },
-    { key: 6, name: '我的群', icon: '', path: '' },
-    { key: 7, name: '设置', icon: '', path: '' },
+    {
+      key: 1,
+      name: '我的帖子',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('我的帖子')
+      },
+    },
+    {
+      key: 2,
+      name: '我的收藏',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('我的收藏')
+      },
+    },
+    {
+      key: 3,
+      name: '通知消息',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('通知消息')
+      },
+    },
+    {
+      key: 4,
+      name: '我的钱包',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('我的钱包')
+      },
+    },
+    {
+      key: 5,
+      name: '打卡签到',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('打卡签到')
+      },
+    },
+    {
+      key: 6,
+      name: '我的订单',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('我的订单')
+      },
+    },
+    {
+      key: 7,
+      name: '设置',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        return proxy.$uri.navigateTo({
+          url: '/pages/mineChild/set/set',
+        })
+      },
+    },
   ],
 })
 </script>
@@ -179,6 +243,9 @@ const pageState = reactive({
       border-radius: $edge;
       margin-right: 20rpx;
     }
+  }
+  .ability-item:last-child {
+    margin-bottom: 50rpx;
   }
 }
 </style>
