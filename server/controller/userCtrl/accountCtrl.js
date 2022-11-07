@@ -1,9 +1,9 @@
-const userDao = require('../../dao/userDao/accountDao')
+const userADao = require('../../dao/userDao/accountDao')
 
 module.exports = {
-  //   test
-  test: async (req, res) => {
-    const result = await userDao.test()
+  // *--------------------------- login
+  login: async (req, res) => {
+    const result = await userADao.login()
     res.json({
       code: 200,
       data: result,

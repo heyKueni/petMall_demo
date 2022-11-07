@@ -1,16 +1,22 @@
 <template>
   <view class="headerNormal">
-    <u-icon
-      v-if="page.pageDelta"
-      class="header-back"
-      name="arrow-leftward"
-      color="#fff"
-      size="20px"
-      @tap="back"
-    ></u-icon>
-    <text class="header-title">
-      <slot></slot>
-    </text>
+    <view class="header-left">
+      <u-icon
+        v-if="page.pageDelta"
+        class="header-back"
+        name="arrow-leftward"
+        color="#fff"
+        size="20px"
+        @tap="back"
+      ></u-icon>
+      <view class="header-title">
+        <slot name="left"></slot>
+      </view>
+    </view>
+
+    <view class="header-right">
+      <slot name="right"></slot>
+    </view>
   </view>
 </template>
 <script setup>
@@ -30,21 +36,29 @@ function back() {
 </script>
 <style lang="scss">
 .headerNormal {
-  width: 750rpx;
+  width: 700rpx;
   height: 85rpx;
   background-color: $theme_back;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
   position: relative;
-  .header-title {
-    color: #fff;
-    line-height: 24rpx;
-    font-size: 32rpx;
+  padding: 0 25rpx;
+  .header-left {
+    display: flex;
+    align-items: center;
+    .header-title {
+      color: #fff;
+      line-height: 24rpx;
+      font-size: 32rpx;
+    }
+    .header-back {
+      padding-right: 20rpx;
+    }
   }
-  .header-back {
-    position: absolute;
-    left: 30rpx;
+  .header-right {
+    font-size: 26rpx;
+    color: #fff;
   }
 }
 </style>

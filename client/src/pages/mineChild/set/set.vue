@@ -1,18 +1,27 @@
 <template>
   <view class="content">
     <a-headerNormal>
-      {{ pageState.title }}
+      <template v-slot:left>
+        <text>设置</text>
+      </template>
     </a-headerNormal>
     <view class="set-content">
       <view class="set-user-card">
-        <view class="set-user-avatar"></view>
+        <u-avatar
+          class="set-user-avatar"
+          :src="user.userAvatar"
+          shape="circle"
+          size="90"
+        ></u-avatar>
         <view class="set-user-info">
           <view class="set-user-name">
-            <text class="set-user-name-nick">我的昵称</text>
-            <text class="set-user-name-level">养宠小白</text>
+            <text class="set-user-name-nick">
+              {{ user.userName || '游客状态' }}
+            </text>
+            <text class="set-user-name-level">{{ user.userLevel }}</text>
           </view>
           <view class="set-user-sign">
-            <text>快来设置自己的个性签名吧</text>
+            <text>{{ user.userSign || '快来设置个性签名吧' }}</text>
           </view>
         </view>
       </view>
@@ -25,14 +34,17 @@
         <text>{{ item.name }}</text>
         <u-icon name="arrow-right" color="#cdcdcd"></u-icon>
       </view>
-      <view class="login-out">
-        <text class="login-out-text">退出登录</text>
+      <view class="login-out" v-if="pageState.isOnline" @tap="loginOut">
+        <text class="login-out-text onlineState-true">退出登录</text>
+      </view>
+      <view class="login-out" v-if="!pageState.isOnline" @tap="loginIn">
+        <text class="login-out-text onlineState-false">前往登录</text>
       </view>
     </view>
   </view>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, getCurrentInstance } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
@@ -40,20 +52,70 @@ import useStore from '@/store/index'
 const pageState = reactive({
   title: '设置',
   abilityList: [
-    { key: '1', name: '更换头像', setFn: () => {} },
-    { key: '2', name: '修改昵称', setFn: () => {} },
-    { key: '3', name: '设置个性签名', setFn: () => {} },
-    { key: '4', name: '等级介绍', setFn: () => {} },
-    { key: '5', name: '我的地址', setFn: () => {} },
-    { key: '6', name: '绑定邮箱', setFn: () => {} },
+    {
+      key: '1',
+      name: '更换头像',
+      setFn: () => {
+        console.log('更换头像')
+      },
+    },
+    {
+      key: '2',
+      name: '修改昵称',
+      setFn: () => {
+        console.log('修改昵称')
+      },
+    },
+    {
+      key: '3',
+      name: '设置个性签名',
+      setFn: () => {
+        console.log('设置个性签名')
+      },
+    },
+    {
+      key: '4',
+      name: '等级介绍',
+      setFn: () => {
+        console.log('等级介绍')
+      },
+    },
+    {
+      key: '5',
+      name: '我的地址',
+      setFn: () => {
+        console.log('我的地址')
+      },
+    },
+    {
+      key: '6',
+      name: '绑定邮箱',
+      setFn: () => {
+        console.log('绑定邮箱')
+      },
+    },
   ],
+  isOnline: false,
 })
+const { proxy } = getCurrentInstance()
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ back
-const { page } = useStore()
+const { page, user } = useStore()
 onShow(() => {
   page.deltaChange(getCurrentPages().length)
+  user.userToken ? (pageState.isOnline = true) : (pageState.isOnline = false)
 })
+// ?+++++++++++++++++++++++++++++++++++++++++++++++ abilities
+// *--------------------------- login
+// out
+function loginOut() {
+  // console.log(user.userToken)
+}
+// in
+function loginIn() {
+  // console.log(user.userToken)
+  proxy.$uri.navigateTo({ url: '/pages/login/login' })
+}
 </script>
 <style lang="scss">
 .set-content {
@@ -131,6 +193,7 @@ onShow(() => {
   position: fixed;
   bottom: 40rpx;
   border-top: 1px solid #cdcdcd;
+  @include item;
   .login-out-text {
     width: inherit;
     color: red;
@@ -139,6 +202,11 @@ onShow(() => {
     align-items: center;
     justify-content: center;
   }
-  @include item;
+  .onlineState-true {
+    color: $theme_back;
+  }
+  .onlineState-false {
+    color: $theme_back;
+  }
 }
 </style>

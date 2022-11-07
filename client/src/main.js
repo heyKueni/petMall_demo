@@ -3,6 +3,7 @@ import App from './App.vue'
 import uviewPlus from 'uview-plus'
 import * as Pinia from 'pinia'
 import uri from './config/interceptor/router'
+import req from './config/interceptor/request'
 
 export function createApp() {
   const app = createSSRApp(App)
@@ -15,6 +16,9 @@ export function createApp() {
 
   // 全局挂载路由守卫
   app.config.globalProperties.$uri = uri
+
+  // 全局挂载请求方法
+  app.config.globalProperties.$req = req
 
   return {
     app,

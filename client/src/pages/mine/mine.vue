@@ -1,13 +1,16 @@
 <template>
   <view class="content" show-scrollbar="false">
     <view class="mine-header">
-      <view class="mine-header-level">1级铲屎官</view>
-      <view class="mine-header-name">狗蛋</view>
-      <image
-        class="mine-header-avatar"
-        :src="user.userAvatar"
-        mode="aspectFit"
-      />
+      <view class="mine-header-level">{{ user.userLevel }}</view>
+      <view class="mine-header-name">{{ user.userName || '游客' }}</view>
+      <view>
+        <u-avatar
+          class="mine-header-avatar"
+          :src="user.userAvatar"
+          shape="circle"
+          size="65"
+        ></u-avatar>
+      </view>
     </view>
     <view class="mine-content-doc">
       <view class="mine-content-doc-header">
@@ -21,7 +24,23 @@
         </view>
         <text class="doc-button">添加宠物</text>
       </view>
-      <view class="mine-content-doc-card">
+      <view
+        class="mine-content-doc-card"
+        v-if="!user.userToken || !user.havePet"
+      >
+        <image
+          class="empty-pet-card ePet-1"
+          src="../../static/icon/q-pig.png"
+          mode="aspectFit"
+        />
+        <image
+          class="empty-pet-card ePet-2"
+          src="../../static/icon/q-bird.png"
+          mode="aspectFit"
+        />
+        <text class="empty-pet-tip">快给朕注册身份证~</text>
+      </view>
+      <view class="mine-content-doc-card" v-if="user.userToken && user.havePet">
         <view class="doc-card-info">
           <view class="doc-card-info-name">
             鸭鸭
@@ -203,6 +222,30 @@ const pageState = reactive({
     display: flex;
     align-items: center;
     justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    .empty-pet-card {
+      width: 240rpx;
+      height: 240rpx;
+      position: absolute;
+    }
+    .empty-pet-tip {
+      padding-left: 280rpx;
+      font-weight: 700;
+      color: $theme_back;
+      font-size: 35rpx;
+    }
+    .ePet-1 {
+      top: -70rpx;
+      left: -50rpx;
+      transform: rotate(25deg);
+      z-index: 11;
+    }
+    .ePet-2 {
+      top: 10rpx;
+      left: 50rpx;
+      transform: rotate(-5deg);
+    }
     .doc-card-info {
       width: 500rpx;
       height: 100rpx;

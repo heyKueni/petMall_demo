@@ -1,12 +1,16 @@
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = '/arlanzon'
 
-const instance = (options) => {
+const request = (options) => {
   return new Promise((resolve, reject) => {
     uni.request({
       url: BASE_URL + options.url,
       method: options.method || 'GET',
       data: options.data || {},
-      header: { Authorization: uni.getStorageSync('token') },
+      header: {
+        Authorization: uni.getStorageSync('token'),
+      },
+      timeout: 8000,
+      dataType: 'json',
       success: (res) => {
         resolve(res)
       },
@@ -17,4 +21,4 @@ const instance = (options) => {
   })
 }
 
-export default instance
+export default request

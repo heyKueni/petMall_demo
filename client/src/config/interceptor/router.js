@@ -15,9 +15,9 @@ const routerInterceptor = (option, routerMethod) => {
   const check = whiteList.filter((item) => {
     return option.url == item
   })
-  if (check.length == 0 && !user.userToken) {
+  if (check.length != 0 && !user.userToken) {
     // console.log('路由拦截')
-    return uni.reLaunch({
+    return uni.navigateTo({
       url: '/pages/login/login',
     })
   } else {

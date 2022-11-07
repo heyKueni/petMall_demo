@@ -5,7 +5,8 @@ const router = express.Router()
 const userAccount = require('./userRouter/userAccount')
 
 // controller - user
-router.use('/user', userAccount)
+router.use('/userA', userAccount)
+
 // controller - admin
 // router.use('/admin', adminRouter)
 

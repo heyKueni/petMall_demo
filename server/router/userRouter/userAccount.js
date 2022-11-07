@@ -1,8 +1,9 @@
 const express = require('express')
-const router = express.Router()
+const route = express.Router()
 
 const accountCtrl = require('../../controller/userCtrl/accountCtrl')
 
-router.get('/test', accountCtrl.test)
+// router.get('/login', accountCtrl.login)
+route.get('/login', accountCtrl.login)
 
-module.exports = router
+module.exports = route

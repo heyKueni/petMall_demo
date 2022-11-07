@@ -4,10 +4,12 @@ const useUser = defineStore('user', {
   state: () => {
     return {
       userId: '1',
-      userName: '鸭鸭',
+      userName: '',
       userAccount: '1305893731',
-      userAvatar: '../../static/test_avatar.jpg',
+      userLevel: '',
       userToken: '',
+      userSign: '',
+      havePet: false,
     }
   },
 })
