@@ -71,7 +71,19 @@
             name="checkCode"
             v-model="loginEForm.checkCode"
           />
-          <text class="check-button">获取验证码</text>
+          <u-toast ref="ecToast"></u-toast>
+          <u-code
+            :seconds="emailCode.seconds"
+            ref="ecCode"
+            @change="codeChange"
+          ></u-code>
+          <button
+            class="check-button"
+            @tap="getCode"
+            :disabled="emailCodeDisabled"
+          >
+            {{ emailCode.tips }}
+          </button>
         </view>
       </view>
       <view v-if="!pageState.emailLogin">
@@ -190,7 +202,6 @@ function loginTypeChange() {
 onShow(() => {
   page.deltaChange(getCurrentPages().length)
 })
-
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ form
 const loginEForm = reactive({
   email: '',
@@ -200,8 +211,6 @@ const loginAForm = reactive({
   account: '',
   password: '',
 })
-// *--------------------------- submit
-
 // submit disabled
 const submitDisabled = computed(() => {
   let state = true
@@ -220,26 +229,71 @@ const submitDisabled = computed(() => {
   }
   return state
 })
-
-// submit
+// *--------------------------- submit
 function submit() {
-  // console.log(loginEForm)
-  let data = pageState.emailLogin ? loginEForm : loginAForm
-  proxy
-    .$req({
-      url: '/userA/login',
-      method: 'GET',
-      data,
+  let data
+  if (pageState.emailLogin) {
+    data = { ...loginEForm }
+    proxy
+      .$req({
+        url: '/userA/loginE',
+        method: 'POST',
+        data,
+      })
+      .then((res) => {
+        console.log(res)
+      })
+  }
+}
+// ?+++++++++++++++++++++++++++++++++++++++++++++++ emailCode
+const emailCode = reactive({
+  tips: '获取验证码',
+  seconds: 60,
+})
+const ecCode = ref()
+// emailCodeDisabled
+const emailCodeDisabled = computed(() => {
+  let emailStr = loginEForm.email
+  let checkStr = /^\w+\@[A-Za-z0-9]+\.[a-z]+$/g
+  if (emailStr && checkStr.test(emailStr)) {
+    return false
+  }
+  return true
+})
+// *--------------------------- codeChange
+function codeChange(text) {
+  emailCode.tips = text
+}
+// *--------------------------- getCode
+function getCode() {
+  if (ecCode.value.canGetCode) {
+    uni.showLoading({
+      title: '正在获取验证码',
     })
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    proxy
+      .$req({
+        url: '/userA/loginCode',
+        method: 'POST',
+        data: {
+          email: loginEForm.email,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        if (res.data.code == 200) {
+          uni.hideLoading()
+          uni.$u.toast('验证码已发送')
+          ecCode.value.start()
+        } else {
+          uni.hideLoading()
+          uni.$u.toast('服务器请求异常')
+        }
+      })
+  } else {
+    uni.$u.toast('邮箱很累，冷却中...')
+  }
 }
 </script>
-
 <style lang="scss">
 .content {
   width: 750rpx;
@@ -360,8 +414,13 @@ function submit() {
     }
     .check-button {
       font-size: 25rpx;
-      padding-left: 26rpx;
+      padding-left: 5rpx;
+      text-align: right;
       color: #908090;
+      background-color: #ffffff00;
+      &::after {
+        border: none;
+      }
     }
   }
   .login-button-loginIn {

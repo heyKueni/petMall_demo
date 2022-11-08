@@ -1,9 +1,11 @@
 const express = require('express')
-const route = express.Router()
+const router = express.Router()
 
 const accountCtrl = require('../../controller/userCtrl/accountCtrl')
 
-// router.get('/login', accountCtrl.login)
-route.get('/login', accountCtrl.login)
+// 验证登录
+router.post('/loginE', accountCtrl.loginE)
+// 邮箱验证码
+router.post('/loginCode', accountCtrl.loginCode)
 
-module.exports = route
+module.exports = router

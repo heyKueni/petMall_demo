@@ -1,4 +1,4 @@
-const pool = require('./dbConfig')
+const pool = require('../config/dbConfig')
 
 function query(sql, data) {
   return new Promise((resolve, reject) => {
