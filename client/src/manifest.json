@@ -58,13 +58,13 @@
   },
   "h5": {
     "devServer": {
-      "port": 8081, //端口号
+      "port": 8080,
       "disableHostCheck": true,
       "proxy": {
         "/arlanzon": {
           "target": "http://localhost:3060",
-          "changeOrigin": true, //是否跨域
-          "secure": false // 设置支持https协议的代理
+          "changeOrigin": true,
+          "secure": false
         }
       }
     }

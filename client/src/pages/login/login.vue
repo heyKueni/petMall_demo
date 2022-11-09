@@ -206,8 +206,8 @@ const loginEForm = reactive({
   checkCode: '',
 })
 const loginAForm = reactive({
-  account: '',
-  password: '',
+  account: 'm18054725121@outlook.com',
+  password: '111111',
 })
 const submitDisabled = computed(() => {
   let state = true
@@ -265,8 +265,7 @@ function submit() {
         uni.hideLoading()
         uni.$u.toast(res.data.msg)
         if (res.data.code == 200) {
-          user.loginStore(res.data.data)
-          console.log(user.userId)
+          user.addLoginState(res.data)
           uni.switchTab({ url: '/pages/index/index' })
         }
       })

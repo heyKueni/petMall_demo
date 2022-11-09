@@ -19,6 +19,10 @@ const errCodeObj = {
     code: 1056,
     msg: '常规错误',
   },
+  _4790: {
+    code: 4790,
+    msg: 'token异常',
+  },
 }
 
 module.exports = errCodeObj

@@ -3,14 +3,15 @@ import { defineStore } from 'pinia'
 const useUser = defineStore('user', {
   state: () => {
     return {
-      userId: '1',
+      userInfo: {},
       userToken: '',
     }
   },
   actions: {
-    loginStore(data) {
-      this.userId = data.uId
+    addLoginState(data) {
       this.userToken = data.token
+      this.userInfo = { ...data.userInfo }
+      console.log(this.userToken, this.userInfo)
     },
   },
 })

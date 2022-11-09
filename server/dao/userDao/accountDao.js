@@ -3,7 +3,7 @@ const query = require('../../utils/dbQuery')
 module.exports = {
   // *--------------------------- 登录 - 通过账号
   loginByAccount: (data) => {
-    const sql = `select * from user where uAccount=?`
+    const sql = `select * from user as u join user_Level as ul on u.uAccount=? and u.uLevel=ul.ulId`
     return query(sql, [data.account])
   },
   // *--------------------------- 登录 - 通过邮箱
@@ -13,8 +13,8 @@ module.exports = {
   },
   // *--------------------------- 邮箱注册
   emailRegister: (data) => {
-    const sql = `insert into user value (null,?,null,null,null,null,null,?,default,?,null,default)`
-    return query(sql, [data.email, data.email, data.loginTime])
+    const sql = `insert into user value (null,?,null,?,null,null,null,?,default,?,null,default)`
+    return query(sql, [data.email, data.name, data.email, data.loginTime])
   },
   // *--------------------------- 检查邮箱存在
   checkEmailExistInUser: (data) => {

@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+const tokenCheck = require('../../middleware/tokenCheck')
+
 const accountCtrl = require('../../controller/userCtrl/accountCtrl')
 
 // 邮箱登录注册

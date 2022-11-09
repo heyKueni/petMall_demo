@@ -9,19 +9,21 @@
       <view class="set-user-card">
         <u-avatar
           class="set-user-avatar"
-          :src="user.userAvatar"
+          :src="user.userInfo.uAvatar"
           shape="circle"
           size="90"
         ></u-avatar>
         <view class="set-user-info">
           <view class="set-user-name">
             <text class="set-user-name-nick">
-              {{ user.userName || '游客状态' }}
+              {{ user.userInfo.uName || '游客' }}
             </text>
-            <text class="set-user-name-level">{{ user.userLevel }}</text>
+            <text class="set-user-name-level">
+              {{ user.userInfo.userLevel }}
+            </text>
           </view>
           <view class="set-user-sign">
-            <text>{{ user.userSign || '快来设置个性签名吧' }}</text>
+            <text>{{ user.userInfo.uSign || '快来设置个性签名吧' }}</text>
           </view>
         </view>
       </view>
@@ -109,7 +111,9 @@ onShow(() => {
 // *--------------------------- login
 // out
 function loginOut() {
-  // console.log(user.userToken)
+  user.$reset()
+  console.log(user.userInfo)
+  proxy.$uri.navigateTo({ url: '/pages/login/login' })
 }
 // in
 function loginIn() {

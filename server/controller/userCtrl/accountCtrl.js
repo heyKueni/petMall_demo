@@ -1,6 +1,11 @@
-const userADao = require('../../dao/userDao/accountDao')
-const sendMail = require('../../utils/email')
+const jwt = require('jsonwebtoken')
+
 const cErr = require('../../config/errConfig')
+const secretKey = require('../../config/tokenConfig')
+
+const accountDao = require('../../dao/userDao/accountDao')
+const sendMail = require('../../utils/email')
+const randomStr = require('../../utils/randomStr')
 
 module.exports = {
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 邮箱登录注册
@@ -10,9 +15,15 @@ module.exports = {
     // *--------------------------- 验证码有效期状态
     lifespan = false
     // *--------------------------- 被验证邮箱存在
-    const codeDb = await userADao.checkCodeExist(req.body)
+    const codeDb = await accountDao.checkCodeExist(req.body)
     let codeRow = codeDb[codeDb.length - 1] || null
-    if (codeRow) {
+    if (!codeRow) {
+      // 非法验证
+      res.json({
+        code: cErr._1059.code,
+        msg: cErr._1059.msg,
+      })
+    } else {
       Date.parse(new Date()) - Date.parse(codeRow.createTime) <= 300000
         ? (lifespan = true)
         : (lifespan = false)
@@ -36,7 +47,7 @@ module.exports = {
               code: cErr._1057.code,
               msg: '验证码被锁定，请重新获取',
             })
-        await userADao.codeToDeath({
+        await accountDao.codeToDeath({
           emailId: codeRow.emailId,
           codeHealth: codeRow.codeHealth - 1,
         })
@@ -46,16 +57,16 @@ module.exports = {
           code: cErr._1058.code,
           msg: cErr._1058.msg,
         })
-        await userADao.codeToDeath({
+        await accountDao.codeToDeath({
           emailId: codeRow.emailId,
           codeHealth: 0,
         })
       } else if (validCode && lifespan) {
         // 验证码合法
-        const userByEmail = await userADao.checkEmailExistInUser(req.body)
+        const userByEmail = await accountDao.checkEmailExistInUser(req.body)
         if (userByEmail.length) {
           // 登录
-          await userADao.loginByEmail({
+          await accountDao.loginByEmail({
             email: req.body.email,
             loginTime: new Date(),
           })
@@ -63,57 +74,72 @@ module.exports = {
             code: 200,
             msg: '登陆成功',
           })
-          await userADao.codeToDeath({
+          await accountDao.codeToDeath({
             emailId: codeRow.emailId,
             codeHealth: 0,
           })
         } else {
           // 系统注册
-          await userADao.emailRegister({
+          const result = await accountDao.emailRegister({
             email: req.body.email,
             loginTime: new Date(),
+            name: '用户' + randomStr('userName'),
           })
           res.json({
             code: 203,
             msg: '注册成功',
           })
-          await userADao.codeToDeath({
+          await accountDao.codeToDeath({
             emailId: codeRow.emailId,
             codeHealth: 0,
           })
         }
       }
-    } else {
-      // 非法验证
-      res.json({
-        code: cErr._1059.code,
-        msg: cErr._1059.msg,
-      })
     }
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 密码登录
   loginA: async (req, res) => {
-    const userRow = await userADao.loginByAccount(req.body)
-    if (userRow[0] && userRow[0].uPassword) {
-      userRow[0].uPassword == req.body.password
-        ? res.json({
-            code: 200,
-            msg: '登陆成功',
-            data: {
-              uId: userRow[0].uId,
-              token: '???????????????????????????',
-            },
-          })
-        : res.json({
-            code: cErr._1060.code,
-            msg: cErr._1060.msg,
-          })
-    } else {
-      // 数据库密码为空 - 非法登录
+    const userRow = await accountDao.loginByAccount(req.body)
+    if (!(userRow[0] && userRow[0].uPassword)) {
+      // 账号或密码错误
       res.json({
         code: cErr._1060.code,
         msg: cErr._1060.msg,
       })
+    } else {
+      if (!(userRow[0].uPassword == req.body.password)) {
+        // 账号或密码错误
+        res.json({
+          code: cErr._1060.code,
+          msg: cErr._1060.msg,
+        })
+      } else {
+        // 密码正确
+        const token = jwt.sign(
+          {
+            userId: userRow[0].uId,
+          },
+          secretKey,
+          {
+            // 有效期：30天
+            expiresIn: 60 * 60 * 24 * 30,
+          },
+        )
+        res.json({
+          code: 200,
+          msg: '登陆成功',
+          userInfo: {
+            uId: userRow[0].uId,
+            uName: userRow[0].uName,
+            uSex: userRow[0].uSex,
+            uAvatar: userRow[0].uAvatar,
+            uSex: userRow[0].uSex,
+            uLevel: userRow[0].ulName,
+            uSign: userRow[0].uSign,
+          },
+          token,
+        })
+      }
     }
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 邮箱验证码
@@ -127,7 +153,7 @@ module.exports = {
       email: req.body.email,
       check: req.body.check,
     })
-    const result = await userADao.loginCode(req.body)
+    const result = await accountDao.loginCode(req.body)
     if (result) {
       res.json({
         code: 200,

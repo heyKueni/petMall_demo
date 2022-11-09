@@ -1,12 +1,12 @@
 <template>
   <view class="content" show-scrollbar="false">
     <view class="mine-header">
-      <view class="mine-header-level">{{ user.userLevel }}</view>
-      <view class="mine-header-name">{{ user.userName || '游客' }}</view>
+      <view class="mine-header-level">{{ user.userInfo.uLevel }}</view>
+      <view class="mine-header-name">{{ user.userInfo.uName || '游客' }}</view>
       <view>
         <u-avatar
           class="mine-header-avatar"
-          :src="user.userAvatar"
+          :src="user.userInfo.uAvatar"
           shape="circle"
           size="65"
         ></u-avatar>
@@ -24,10 +24,7 @@
         </view>
         <text class="doc-button">添加宠物</text>
       </view>
-      <view
-        class="mine-content-doc-card"
-        v-if="!user.userToken || !user.havePet"
-      >
+      <view class="mine-content-doc-card" v-if="user.userToken == ''">
         <image
           class="empty-pet-card ePet-1"
           src="../../static/icon/q-pig.png"
@@ -40,19 +37,22 @@
         />
         <text class="empty-pet-tip">快给朕注册身份证~</text>
       </view>
-      <view class="mine-content-doc-card" v-if="user.userToken && user.havePet">
+      <view
+        class="mine-content-doc-card"
+        v-if="JSON.stringify(pageState.petInfo) != '{}' && user.userToken != ''"
+      >
         <view class="doc-card-info">
           <view class="doc-card-info-name">
-            鸭鸭
+            {{ pageState.petInfo.pName }}
           </view>
           <view class="doc-card-info-other">
-            <text style="padding-right: 5px;">1岁6个月</text>
-            <text>未绝育</text>
+            <text style="padding-right: 5px;">{{ petAge }}</text>
+            <text>{{ pageState.petInfo.pBear ? '未绝育' : '已绝育' }}</text>
           </view>
         </view>
         <image
           class="doc-card-avatar"
-          src="../../static/icon/q-dog.png"
+          :src="pageState.petInfo.ptIcon"
           mode="aspectFit"
         />
       </view>
@@ -75,15 +75,16 @@
   </view>
 </template>
 <script setup>
-import { ref, reactive, getCurrentInstance } from 'vue'
+import { ref, reactive, getCurrentInstance, computed } from 'vue'
 import { storeToRefs } from 'pinia'
+import { onShow } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const { user } = useStore()
 const { proxy } = getCurrentInstance()
-
 const pageState = reactive({
+  petInfo: {},
   abilityList: [
     {
       key: 1,
@@ -151,6 +152,42 @@ const pageState = reactive({
       },
     },
   ],
+})
+// ?+++++++++++++++++++++++++++++++++++++++++++++++ getPetInfo
+onShow(() => {
+  if (JSON.stringify(user.userInfo) != '{}') {
+    proxy
+      .$req({
+        url: '/petA/checkPetExist',
+        methods: 'GET',
+        data: {
+          uId: user.userInfo.uId,
+        },
+      })
+      .then((res) => {
+        if (res.data.code == 200) {
+          pageState.petInfo = res.data.data[0]
+          console.log(pageState.petInfo)
+        }
+      })
+  }
+  if (user.userToken == '') {
+    user.userInfo = {}
+  }
+})
+// ?+++++++++++++++++++++++++++++++++++++++++++++++ petAge
+const petAge = computed(() => {
+  if (JSON.stringify(pageState.petInfo) == '{}') {
+    return 'computedError'
+  } else {
+    let dateNow = new Date()
+    let birth = new Date(pageState.petInfo.pBirth)
+    let result =
+      dateNow.getFullYear() * 12 +
+      dateNow.getMonth() -
+      (birth.getFullYear() * 12 + birth.getMonth())
+    return parseInt(result / 12) + '岁' + (result % 12) + '个月'
+  }
 })
 </script>
 <style lang="scss">
