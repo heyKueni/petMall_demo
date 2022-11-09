@@ -3,9 +3,11 @@ const router = express.Router()
 
 const accountCtrl = require('../../controller/userCtrl/accountCtrl')
 
-// 验证登录
+// 邮箱登录注册
 router.post('/loginE', accountCtrl.loginE)
 // 邮箱验证码
 router.post('/loginCode', accountCtrl.loginCode)
+// 密码登录
+router.post('/loginA', accountCtrl.loginA)
 
 module.exports = router

@@ -1,6 +1,11 @@
 const query = require('../../utils/dbQuery')
 
 module.exports = {
+  // *--------------------------- 登录 - 通过账号
+  loginByAccount: (data) => {
+    const sql = `select * from user where uAccount=?`
+    return query(sql, [data.account])
+  },
   // *--------------------------- 登录 - 通过邮箱
   loginByEmail: (data) => {
     const sql = `update user set uLoginTime=? where uEmail=?`

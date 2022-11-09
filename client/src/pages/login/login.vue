@@ -159,7 +159,7 @@ import { onShow } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
-const { user, page } = useStore()
+const { page, user } = useStore()
 const { proxy } = getCurrentInstance()
 const pageState = reactive({
   emailLogin: true,
@@ -182,7 +182,6 @@ const rightAnimal = computed(() => {
     ? pageState.loginAnimal.E_right
     : pageState.loginAnimal.A_right
 })
-
 // *--------------------------- loginTypeChange
 function loginTypeChange() {
   if (pageState.emailLogin) {
@@ -197,12 +196,11 @@ function loginTypeChange() {
     pageState.checked = false
   }
 }
-
-// *--------------------------- onShow
+// *--------------------------- onShow - back
 onShow(() => {
   page.deltaChange(getCurrentPages().length)
 })
-// ?+++++++++++++++++++++++++++++++++++++++++++++++ form
+// ?+++++++++++++++++++++++++++++++++++++++++++++++ login
 const loginEForm = reactive({
   email: '',
   checkCode: '',
@@ -211,7 +209,6 @@ const loginAForm = reactive({
   account: '',
   password: '',
 })
-// submit disabled
 const submitDisabled = computed(() => {
   let state = true
   if (pageState.emailLogin && pageState.checked) {
@@ -229,11 +226,11 @@ const submitDisabled = computed(() => {
   }
   return state
 })
-// *--------------------------- submit
+// *--------------------------- submit - login A or E
 function submit() {
-  let data
   if (pageState.emailLogin) {
-    data = { ...loginEForm }
+    // 邮箱登录注册
+    let data = { ...loginEForm }
     proxy
       .$req({
         url: '/userA/loginE',
@@ -241,7 +238,37 @@ function submit() {
         data,
       })
       .then((res) => {
+        uni.$u.toast(res.data.msg)
+        if (res.data.code == 200) {
+          // 登录 - 前往首页
+          uni.switchTab({
+            url: '/pages/index/index',
+          })
+        } else if (res.data.code == 203) {
+          // 注册 - 前往注册引导
+        }
+      })
+  } else {
+    // 密码登录
+    let data = { ...loginAForm }
+    uni.showLoading({
+      title: '正在登录',
+    })
+    proxy
+      .$req({
+        url: '/userA/loginA',
+        method: 'POST',
+        data,
+      })
+      .then((res) => {
         console.log(res)
+        uni.hideLoading()
+        uni.$u.toast(res.data.msg)
+        if (res.data.code == 200) {
+          user.loginStore(res.data.data)
+          console.log(user.userId)
+          uni.switchTab({ url: '/pages/index/index' })
+        }
       })
   }
 }
@@ -251,7 +278,6 @@ const emailCode = reactive({
   seconds: 60,
 })
 const ecCode = ref()
-// emailCodeDisabled
 const emailCodeDisabled = computed(() => {
   let emailStr = loginEForm.email
   let checkStr = /^\w+\@[A-Za-z0-9]+\.[a-z]+$/g
@@ -279,7 +305,6 @@ function getCode() {
         },
       })
       .then((res) => {
-        console.log(res)
         if (res.data.code == 200) {
           uni.hideLoading()
           uni.$u.toast('验证码已发送')
