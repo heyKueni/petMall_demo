@@ -1,25 +1,36 @@
 const query = require('../../utils/dbQuery')
 
 module.exports = {
-  // *--------------------------- 登录 - 通过账号
-  loginByAccount: (data) => {
+  // *--------------------------- 检查账号存在
+  checkAccountExist: (data) => {
     const sql = `select * from user as u join user_Level as ul on u.uAccount=? and u.uLevel=ul.ulId`
     return query(sql, [data.account])
-  },
-  // *--------------------------- 登录 - 通过邮箱
-  loginByEmail: (data) => {
-    const sql = `update user set uLoginTime=? where uEmail=?`
-    return query(sql, [data.loginTime, data.email])
-  },
-  // *--------------------------- 邮箱注册
-  emailRegister: (data) => {
-    const sql = `insert into user value (null,?,null,?,null,null,null,?,default,?,null,default)`
-    return query(sql, [data.email, data.name, data.email, data.loginTime])
   },
   // *--------------------------- 检查邮箱存在
   checkEmailExistInUser: (data) => {
     const sql = `select * from user where uEmail=?`
     return query(sql, [data.email])
+  },
+  // *--------------------------- 登录 - 通过账号
+  loginByAccount: (data) => {
+    const sql = `update user set uLoginTime=? where uAccount=?`
+    return query(sql, [data.loginTime, data.account])
+  },
+
+  // *--------------------------- 登录 - 通过邮箱
+  loginByEmail: (data) => {
+    const sql = `update user set uLoginTime=? where uEmail=?`
+    return query(sql, [data.loginTime, data.email])
+  },
+  // *--------------------------- 注册 - 通过邮箱
+  emailRegister: (data) => {
+    const sql = `insert into user value (null,?,null,?,null,null,null,?,default,?,null,default)`
+    return query(sql, [data.email, data.name, data.email, data.loginTime])
+  },
+  // *--------------------------- 发送验证码 - 备份以供验证
+  loginCode: (data) => {
+    const sql = `insert into email_code value(null,?,?,default,null)`
+    return query(sql, [data.email, data.check])
   },
   // *--------------------------- 检查验证码存在
   checkCodeExist: (data) => {
@@ -30,10 +41,5 @@ module.exports = {
   codeToDeath: (data) => {
     const sql = `update email_code set codeHealth=? where emailId=?`
     return query(sql, [data.codeHealth, data.emailId])
-  },
-  // *--------------------------- 发送验证码 - 备份以供验证
-  loginCode: (data) => {
-    const sql = `insert into email_code value(null,?,?,default,null)`
-    return query(sql, [data.email, data.check])
   },
 }

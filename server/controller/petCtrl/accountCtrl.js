@@ -6,7 +6,7 @@ const secretKey = require('../../config/tokenConfig')
 const accountDao = require('../../dao/petDao/accountDao')
 
 module.exports = {
-  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 检查用户的宠物信息
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 检查用户宠物信息
   checkPetExist: async (req, res) => {
     const result = await accountDao.checkPetExist(req.query)
     result.length

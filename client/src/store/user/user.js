@@ -11,6 +11,7 @@ const useUser = defineStore('user', {
     addLoginState(data) {
       this.userToken = data.token
       this.userInfo = { ...data.userInfo }
+      sessionStorage.setItem('token', data.token)
       console.log(this.userToken, this.userInfo)
     },
   },

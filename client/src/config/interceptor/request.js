@@ -6,9 +6,10 @@ const request = (options) => {
       url: BASE_URL + options.url,
       method: options.method || 'GET',
       data: options.data || {},
-      // header: {
-      //   Authorization: uni.getStorageSync('token'),
-      // },
+      header: {
+        // Authorization: uni.getStorageSync('token'),
+        Authorization: sessionStorage.getItem('token'),
+      },
       timeout: 8000,
       dataType: 'json',
       success: (res) => {

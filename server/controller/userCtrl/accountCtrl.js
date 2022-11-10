@@ -6,6 +6,7 @@ const secretKey = require('../../config/tokenConfig')
 const accountDao = require('../../dao/userDao/accountDao')
 const sendMail = require('../../utils/email')
 const randomStr = require('../../utils/randomStr')
+const createToken = require('../../utils/createToken')
 
 module.exports = {
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 邮箱登录注册
@@ -99,7 +100,7 @@ module.exports = {
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 密码登录
   loginA: async (req, res) => {
-    const userRow = await accountDao.loginByAccount(req.body)
+    const userRow = await accountDao.checkAccountExist(req.body)
     if (!(userRow[0] && userRow[0].uPassword)) {
       // 账号或密码错误
       res.json({
@@ -115,29 +116,13 @@ module.exports = {
         })
       } else {
         // 密码正确
-        const token = jwt.sign(
-          {
-            userId: userRow[0].uId,
-          },
-          secretKey,
-          {
-            // 有效期：30天
-            expiresIn: 60 * 60 * 24 * 30,
-          },
-        )
+        const result = createToken(userRow[0])
+        req.body.loginTime = new Date()
+        await accountDao.loginByAccount(req.body)
         res.json({
           code: 200,
           msg: '登陆成功',
-          userInfo: {
-            uId: userRow[0].uId,
-            uName: userRow[0].uName,
-            uSex: userRow[0].uSex,
-            uAvatar: userRow[0].uAvatar,
-            uSex: userRow[0].uSex,
-            uLevel: userRow[0].ulName,
-            uSign: userRow[0].uSign,
-          },
-          token,
+          ...result,
         })
       }
     }
