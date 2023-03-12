@@ -42,4 +42,9 @@ module.exports = {
     const sql = `update email_code set codeHealth=? where emailId=?`
     return query(sql, [data.codeHealth, data.emailId])
   },
+  // *---------------------------  用户pinia数据更新
+  userPiniaUpdate: (data) => {
+    const sql = `select uId,uName,uSex,uAvatar,uLevel,uSign from user where uId=?`
+    return query(sql, [data.uId])
+  },
 }

@@ -20,8 +20,6 @@
   </view>
 </template>
 <script setup>
-import { reactive } from 'vue'
-import { storeToRefs } from 'pinia'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ cpn init

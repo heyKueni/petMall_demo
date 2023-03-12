@@ -23,7 +23,7 @@ const tokenCheck = async (req, res, next) => {
   try {
     // 把用户信息读取出来 挂载到req请求对象 往后继续执行
     req.tokenInfo = await verify(token, secretKey)
-    console.log('tokenInfo', req.tokenInfo)
+    // console.log('tokenInfo', req.tokenInfo)
     next()
   } catch (error) {
     // return res.status(401).end()

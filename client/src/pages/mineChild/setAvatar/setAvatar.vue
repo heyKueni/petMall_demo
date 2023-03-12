@@ -18,18 +18,24 @@
           type="success"
           text="确认上传"
           @tap="upLoadImg"
+          :disabled="uploadCheck"
         ></u-button>
       </view>
     </view>
   </view>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import userStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const { user } = userStore()
 let avatarSrc = ref(user.userInfo.uAvatar)
+let uploadCheck = ref(true)
+
+const closeWatch = watch(avatarSrc, (newValue, oldValue) => {
+  uploadCheck.value = false
+})
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ avatar
 
@@ -43,23 +49,24 @@ function chooseImg() {
   })
 }
 // *--------------------------- upload
+
 function upLoadImg() {
   uni.uploadFile({
     url: '/arlanzon/userA/avatarChange', // 请求地址
     filePath: avatarSrc.value, // 临时文件路径
-    name: 'avatarFile', // 文件对应的key值
+    name: 'avatar', // 文件对应的key值
     header: {
-      Authorization: sessionStorage.getItem('token'), // 需要带的请求头，token等等
-      // type: 'client',
-    },
-    formData: {
-      // 额外的请求数据
-      uId: user.userInfo.uId,
+      Authorization: sessionStorage.getItem('token'),
     },
     success: (res) => {
-      // 成功后的回调
-      console.log(res)
-      console.log('修改成功')
+      // 更新用户信息
+      console.log(res.data)
+      const data = JSON.parse(res.data)
+      user.updateUserState(data.info)
+      uni.$u.toast(data.msg)
+      uni.navigateBack({
+        delta: 1,
+      })
     },
   })
 }

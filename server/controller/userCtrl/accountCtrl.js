@@ -1,7 +1,4 @@
-const jwt = require('jsonwebtoken')
-
 const cErr = require('../../config/errConfig')
-const secretKey = require('../../config/tokenConfig')
 
 const accountDao = require('../../dao/userDao/accountDao')
 const sendMail = require('../../utils/email')
@@ -120,6 +117,7 @@ module.exports = {
         const result = createToken(userRow[0])
         req.body.loginTime = new Date()
         await accountDao.loginByAccount(req.body)
+        console.log(result)
         res.json({
           code: 200,
           msg: '登陆成功',
@@ -145,9 +143,5 @@ module.exports = {
         code: 200,
       })
     }
-  },
-  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 修改头像
-  avatarChange: async (req, res) => {
-    console.log('????', req.file)
   },
 }
