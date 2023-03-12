@@ -7,7 +7,6 @@ const request = (options) => {
       method: options.method || 'GET',
       data: options.data || {},
       header: {
-        // Authorization: uni.getStorageSync('token'),
         Authorization: sessionStorage.getItem('token'),
       },
       timeout: 8000,

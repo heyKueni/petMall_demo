@@ -11,5 +11,7 @@ router.post('/loginE', accountCtrl.loginE)
 router.post('/loginCode', accountCtrl.loginCode)
 // 密码登录
 router.post('/loginA', accountCtrl.loginA)
+// 修改头像
+router.post('/avatarChange', accountCtrl.avatarChange)
 
 module.exports = router

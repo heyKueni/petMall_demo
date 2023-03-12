@@ -26,6 +26,24 @@
     },
     {
       "path": "pages/mineChild/set/set"
+    },
+    {
+      "path": "pages/mineChild/setAddress/setAddress"
+    },
+    {
+      "path": "pages/mineChild/setAvatar/setAvatar"
+    },
+    {
+      "path": "pages/mineChild/setEmail/setEmail"
+    },
+    {
+      "path": "pages/mineChild/setLevel/setLevel"
+    },
+    {
+      "path": "pages/mineChild/setName/setName"
+    },
+    {
+      "path": "pages/mineChild/setSign/setSign"
     }
   ],
   "globalStyle": {

@@ -25,7 +25,7 @@ module.exports = {
         msg: cErr._1059.msg,
       })
     } else {
-      Date.parse(new Date()) - Date.parse(codeRow.createTime) <= 300000
+      Date.parse(new Date()) - Date.parse(codeRow.eCreateTime) <= 300000
         ? (lifespan = true)
         : (lifespan = false)
       codeRow.emailCode == req.body.checkCode
@@ -53,6 +53,7 @@ module.exports = {
           codeHealth: codeRow.codeHealth - 1,
         })
       } else if (validCode && !lifespan) {
+        console.log(validCode, lifespan)
         // 验证码过期
         res.json({
           code: cErr._1058.code,
@@ -144,5 +145,9 @@ module.exports = {
         code: 200,
       })
     }
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 修改头像
+  avatarChange: async (req, res) => {
+    console.log('????', req.file)
   },
 }

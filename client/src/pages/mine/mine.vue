@@ -75,8 +75,7 @@
   </view>
 </template>
 <script setup>
-import { ref, reactive, getCurrentInstance, computed } from 'vue'
-import { storeToRefs } from 'pinia'
+import { reactive, getCurrentInstance, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
@@ -167,7 +166,7 @@ onShow(() => {
       .then((res) => {
         if (res.data.code == 200) {
           pageState.petInfo = res.data.data[0]
-          console.log(pageState.petInfo)
+          // console.log(pageState.petInfo)
         }
       })
   }

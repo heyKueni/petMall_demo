@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+// import { defineStore } from 'pinia'
 
 import useUser from './user/user' // 用户信息
 import usePage from './page/page' // 页面状态

@@ -202,7 +202,7 @@ onShow(() => {
 })
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ login
 const loginEForm = reactive({
-  email: '',
+  email: 'm18054725121@outlook.com',
   checkCode: '',
 })
 const loginAForm = reactive({
@@ -238,6 +238,7 @@ function submit() {
         data,
       })
       .then((res) => {
+        user.addLoginState(res.data)
         uni.$u.toast(res.data.msg)
         if (res.data.code == 200) {
           // 登录 - 前往首页

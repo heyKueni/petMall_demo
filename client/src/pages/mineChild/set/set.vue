@@ -51,6 +51,7 @@ import { onShow } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
+const { proxy } = getCurrentInstance()
 const pageState = reactive({
   title: '设置',
   abilityList: [
@@ -58,48 +59,47 @@ const pageState = reactive({
       key: '1',
       name: '更换头像',
       setFn: () => {
-        console.log('更换头像')
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setAvatar/setAvatar' })
       },
     },
     {
       key: '2',
       name: '修改昵称',
       setFn: () => {
-        console.log('修改昵称')
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setName/setName' })
       },
     },
     {
       key: '3',
       name: '设置个性签名',
       setFn: () => {
-        console.log('设置个性签名')
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setSign/setSign' })
       },
     },
     {
       key: '4',
       name: '等级介绍',
       setFn: () => {
-        console.log('等级介绍')
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setLevel/setLevel' })
       },
     },
     {
       key: '5',
       name: '我的地址',
       setFn: () => {
-        console.log('我的地址')
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setAddress/setAddress' })
       },
     },
     {
       key: '6',
       name: '绑定邮箱',
       setFn: () => {
-        console.log('绑定邮箱')
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setEmail/setEmail' })
       },
     },
   ],
   isOnline: false,
 })
-const { proxy } = getCurrentInstance()
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ back
 const { page, user } = useStore()
@@ -117,7 +117,6 @@ function loginOut() {
 }
 // in
 function loginIn() {
-  // console.log(user.userToken)
   proxy.$uri.navigateTo({ url: '/pages/login/login' })
 }
 </script>
@@ -127,7 +126,6 @@ function loginIn() {
   padding: 70rpx 0 15rpx 0;
   display: flex;
   flex-direction: column;
-  // align-items: center;
 }
 .set-user-card {
   width: 720rpx;
@@ -145,7 +143,6 @@ function loginIn() {
     border-radius: $edge;
     border: 1px solid #000;
     background: {
-      image: url('../../../static/test_avatar.jpg');
       repeat: no-repeat;
       size: cover;
     }
