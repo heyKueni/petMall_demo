@@ -13,12 +13,12 @@ const useUser = defineStore('user', {
       this.userToken = data.token
       this.userInfo = { ...data.userInfo }
       sessionStorage.setItem('token', data.token)
-      console.log(this.userToken, this.userInfo)
+      // console.log(this.userToken, this.userInfo)
     },
     // 修改用户状态
     updateUserState(data) {
       this.userInfo = { ...data }
-      console.log(this.userInfo)
+      // console.log(this.userInfo)
     },
   },
 })

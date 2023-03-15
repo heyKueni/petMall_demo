@@ -6,4 +6,14 @@ module.exports = {
     const sql = `update user set uAvatar=? where uId=?`
     return query(sql, [data.path, data.uId])
   },
+  // 修改昵称
+  changeName: (data) => {
+    const sql = `update user set uName=? where uId=?`
+    return query(sql, [data.name, data.uId])
+  },
+  // 修改签名
+  changeSign: (data) => {
+    const sql = `update user set uSign=? where uId=?`
+    return query(sql, [data.sign, data.uId])
+  },
 }

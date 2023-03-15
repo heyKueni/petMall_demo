@@ -23,5 +23,9 @@ router.post(
   multerAvatar,
   mineAndSetCtrl.avatarChange,
 )
+// 修改昵称
+router.post('/changeName', tokenCheck, mineAndSetCtrl.changeName)
+// 修改签名
+router.post('/changeSign', tokenCheck, mineAndSetCtrl.changeSign)
 
 module.exports = router

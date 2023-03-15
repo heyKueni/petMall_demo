@@ -25,7 +25,7 @@
   </view>
 </template>
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
 import userStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
@@ -60,10 +60,11 @@ function upLoadImg() {
     },
     success: (res) => {
       // 更新用户信息
-      console.log(res.data)
       const data = JSON.parse(res.data)
       user.updateUserState(data.info)
+      // 离开页面
       uni.$u.toast(data.msg)
+      closeWatch()
       uni.navigateBack({
         delta: 1,
       })
