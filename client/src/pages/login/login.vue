@@ -1,5 +1,5 @@
 <template>
-  <view class="content">
+  <view class="header">
     <a-headerNormal>
       <template v-slot:left>
         <text>
@@ -12,6 +12,8 @@
         </text>
       </template>
     </a-headerNormal>
+  </view>
+  <view class="content">
     <view class="login-header">
       <view class="left-paw">
         <view

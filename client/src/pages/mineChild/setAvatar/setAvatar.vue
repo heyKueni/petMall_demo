@@ -1,8 +1,10 @@
 <template>
-  <view class="content">
+  <view class="header">
     <a-headerNormal>
       <template v-slot:right><text>更换头像</text></template>
     </a-headerNormal>
+  </view>
+  <view class="content">
     <view class="avatarChangeFrame">
       <image class="avatar" :src="avatarSrc"></image>
       <text class="avatarName">当前头像</text>
@@ -56,9 +58,10 @@ function upLoadImg() {
     filePath: avatarSrc.value, // 临时文件路径
     name: 'avatar', // 文件对应的key值
     header: {
-      Authorization: sessionStorage.getItem('token'),
+      Authorization: uni.getStorageSync('token'),
     },
     success: (res) => {
+      console.log(res)
       // 更新用户信息
       const data = JSON.parse(res.data)
       user.updateUserState(data.info)

@@ -35,4 +35,31 @@ module.exports = {
     const result = await accountDao.userPiniaUpdate({ uId })
     res.json({ code: 200, msg: '修改成功', info: { ...result[0] } })
   },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @查询
+  selectAddress: async (req, res) => {
+    let uId = req.tokenInfo.userId
+    const result = await mineAndSetDao.selectAddress({
+      uId,
+    })
+    let resList = [...result]
+    resList = resList.map((item) => {
+      return {
+        ...item,
+        tel: item.tel.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'),
+      }
+    })
+    res.json({ code: 200, msg: '查询成功', list: [...resList] })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @删除
+  delAddress: async (req, res) => {
+    let uId = req.tokenInfo.userId
+    let aId = req.body.aId
+    const result = await mineAndSetDao.delAddress({
+      uId,
+      aId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '删除成功' })
+      : res.json({ code: 201, msg: '服务器响应错误' })
+  },
 }

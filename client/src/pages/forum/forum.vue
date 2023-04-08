@@ -1,4 +1,5 @@
 <template>
+  <view class="header"></view>
   <view class="content">
     <text>宠圈</text>
   </view>

@@ -7,7 +7,8 @@ $theme: #ffffff;
 $theme_back: #79a186;
 
 // 公共样式
-.content {
+.header {
+  position: fixed;
   &::before {
     content: '';
     display: block;
@@ -15,5 +16,26 @@ $theme_back: #79a186;
     height: 40rpx;
     background-color: $theme_back;
   }
-
+}
+.content {
+  &::before {
+    content: '';
+    display: block;
+    width: 750rpx;
+    height: 125rpx;
+  }
+}
+.mainBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &::before {
+    content: '';
+    display: block;
+    width: 750rpx;
+    height: 40rpx;
+  }
+}
+body {
+  background-color: rgb(249, 249, 249);
 }

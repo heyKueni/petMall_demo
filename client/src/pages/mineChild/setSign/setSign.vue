@@ -1,8 +1,10 @@
 <template>
-  <view class="content">
+  <view class="header">
     <a-headerNormal>
       <template v-slot:right><text>设置个性签名</text></template>
     </a-headerNormal>
+  </view>
+  <view class="content">
     <view class="signFrame">
       <textarea
         class="uTextarea"

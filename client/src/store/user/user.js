@@ -12,7 +12,7 @@ const useUser = defineStore('user', {
     addLoginState(data) {
       this.userToken = data.token
       this.userInfo = { ...data.userInfo }
-      sessionStorage.setItem('token', data.token)
+      uni.setStorageSync('token', data.token)
       // console.log(this.userToken, this.userInfo)
     },
     // 修改用户状态

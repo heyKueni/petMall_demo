@@ -14,7 +14,7 @@ export function createApp() {
   // 全局挂载pinia
   app.use(Pinia.createPinia())
 
-  // 全局挂载路由守卫
+  // 全局挂载“路由守卫”
   app.config.globalProperties.$uri = uri
 
   // 全局挂载请求方法

@@ -1,10 +1,12 @@
 <template>
-  <view class="content">
+  <view class="header">
     <a-headerNormal>
       <template v-slot:left>
         <text>设置</text>
       </template>
     </a-headerNormal>
+  </view>
+  <view class="content">
     <view class="set-content">
       <view class="set-user-card">
         <u-avatar
@@ -112,7 +114,7 @@ onShow(() => {
 // out
 function loginOut() {
   user.$reset()
-  console.log(user.userInfo)
+  uni.removeStorageSync('token')
   proxy.$uri.navigateTo({ url: '/pages/login/login' })
 }
 // in

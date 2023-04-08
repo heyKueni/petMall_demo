@@ -1,8 +1,10 @@
 <template>
-  <view class="content">
+  <view class="header">
     <a-headerNormal>
       <template v-slot:right><text>修改昵称</text></template>
     </a-headerNormal>
+  </view>
+  <view class="content">
     <view class="uni-input-wrapper">
       <input
         class="uni-input nameInput"
@@ -34,6 +36,7 @@ const closeWatch = watch(nickName, (value, preValue) => {
 const changeName = () => {
   const data = { name: nickName.value }
   proxy.$req({ url: '/userA/changeName', method: 'POST', data }).then((res) => {
+    console.log(res)
     if (res.data.code == 200) {
       // 更新用户信息
       const data = res.data

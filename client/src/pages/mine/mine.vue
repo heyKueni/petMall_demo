@@ -1,5 +1,6 @@
 <template>
-  <view class="content" show-scrollbar="false">
+  <view class="header"></view>
+  <view class="mainBody" show-scrollbar="false">
     <view class="mine-header">
       <view class="mine-header-level">{{ user.userInfo.uLevel }}</view>
       <view class="mine-header-name">{{ user.userInfo.uName || '游客' }}</view>
@@ -76,7 +77,7 @@
 </template>
 <script setup>
 import { reactive, getCurrentInstance, computed } from 'vue'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
@@ -153,8 +154,9 @@ const pageState = reactive({
   ],
 })
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ getPetInfo
-onShow(() => {
-  if (JSON.stringify(user.userInfo) != '{}') {
+onLoad(() => {
+  let userToken = uni.getStorageSync('token')
+  if (userToken != '') {
     proxy
       .$req({
         url: '/petA/checkPetExist',
@@ -164,9 +166,10 @@ onShow(() => {
         },
       })
       .then((res) => {
+        console.log(res)
         if (res.data.code == 200) {
           pageState.petInfo = res.data.data[0]
-          // console.log(pageState.petInfo)
+          console.log(pageState.petInfo)
         }
       })
   }

@@ -40,7 +40,7 @@ function back() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
+  // position: fixed;
   padding: 0 25rpx;
   .header-left {
     display: flex;

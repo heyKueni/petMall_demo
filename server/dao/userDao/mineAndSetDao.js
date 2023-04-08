@@ -16,4 +16,13 @@ module.exports = {
     const sql = `update user set uSign=? where uId=?`
     return query(sql, [data.sign, data.uId])
   },
+  // 查询地址
+  selectAddress: (data) => {
+    const sql = `select aId,receiver,tel,address from user as u,user_address as ua where u.uId=ua.aWhoes and u.uId=?`
+    return query(sql, [data.uId])
+  },
+  delAddress: (data) => {
+    const sql = `delete from user_address wheres aWhoes=? and aId=?`
+    return query(sql, [data.uId, data.aId])
+  },
 }

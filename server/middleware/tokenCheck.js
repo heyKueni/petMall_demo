@@ -10,7 +10,7 @@ const secretKey = require('../config/tokenConfig')
 
 const tokenCheck = async (req, res, next) => {
   let token = req.headers['authorization']
-
+  console.log('token中间件', token)
   if (!token) {
     // return res.status(401).end()
     console.log(111)
@@ -27,7 +27,6 @@ const tokenCheck = async (req, res, next) => {
     next()
   } catch (error) {
     // return res.status(401).end()
-    console.log(222)
     res.json({
       code: cErr._4790.code,
       msg: cErr._4790.msg,

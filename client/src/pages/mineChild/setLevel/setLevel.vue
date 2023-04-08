@@ -1,10 +1,12 @@
 <template>
-  <view class="content">
+  <view class="header">
     <a-headerNormal>
       <template v-slot:right>
         <text>等级介绍</text>
       </template>
     </a-headerNormal>
+  </view>
+  <view class="content">
     <view class="levelFrame">
       <view class="levelNormal">
         <view class="lnHead">一、什么是养宠等级？</view>

@@ -6,45 +6,20 @@
     }
   },
   "pages": [
-    {
-      "path": "pages/start/start"
-    },
-    {
-      "path": "pages/login/login"
-    },
-    {
-      "path": "pages/index/index"
-    },
-    {
-      "path": "pages/mall/mall"
-    },
-    {
-      "path": "pages/forum/forum"
-    },
-    {
-      "path": "pages/mine/mine"
-    },
-    {
-      "path": "pages/mineChild/set/set"
-    },
-    {
-      "path": "pages/mineChild/setAddress/setAddress"
-    },
-    {
-      "path": "pages/mineChild/setAvatar/setAvatar"
-    },
-    {
-      "path": "pages/mineChild/setEmail/setEmail"
-    },
-    {
-      "path": "pages/mineChild/setLevel/setLevel"
-    },
-    {
-      "path": "pages/mineChild/setName/setName"
-    },
-    {
-      "path": "pages/mineChild/setSign/setSign"
-    }
+    { "path": "pages/start/start" },
+    { "path": "pages/login/login" },
+    { "path": "pages/index/index" },
+    { "path": "pages/mall/mall" },
+    { "path": "pages/forum/forum" },
+    { "path": "pages/mine/mine" },
+    { "path": "pages/mineChild/set/set" },
+    { "path": "pages/mineChild/setAddress/setAddress" },
+    { "path": "pages/mineChild/setAddressEditor/setAddressEditor" },
+    { "path": "pages/mineChild/setAvatar/setAvatar" },
+    { "path": "pages/mineChild/setEmail/setEmail" },
+    { "path": "pages/mineChild/setLevel/setLevel" },
+    { "path": "pages/mineChild/setName/setName" },
+    { "path": "pages/mineChild/setSign/setSign" }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
