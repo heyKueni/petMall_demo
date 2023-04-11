@@ -31,5 +31,15 @@ router.post('/changeSign', tokenCheck, mineAndSetCtrl.changeSign)
 router.get('/selectAddress', tokenCheck, mineAndSetCtrl.selectAddress)
 // 收货地址 @删除
 router.post('/delAddress', tokenCheck, mineAndSetCtrl.delAddress)
+// 收货地址 @添加
+router.post('/addAddress', tokenCheck, mineAndSetCtrl.addAddress)
+// 收货地址 @查询被修改地址
+router.post(
+  '/addressEditorSelect',
+  tokenCheck,
+  mineAndSetCtrl.addressEditorSelect,
+)
+// 收货地址 @修改
+router.post('/changeAddress', tokenCheck, mineAndSetCtrl.changeAddress)
 
 module.exports = router

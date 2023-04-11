@@ -3,26 +3,40 @@ import useStore from '../../store/index'
 
 // router白名单
 const whiteList = [
+  // 加载页
   '/pages/start/start',
+  // 登录页
   '/pages/login/login',
-  'pages/mineChild/set/set',
+  // 设置页
+  '/pages/mineChild/set/set',
+  // 搜索页
+  '/pages/search/search',
 ]
 
 // 登录验证拦截
 const routerInterceptor = (option, routerMethod) => {
+  let urlChecked = option.url
   // 不能在函数外取用user，pinia并未挂载
   const { user } = useStore()
+  // 截取正在路由传值的url
+  if (urlChecked.lastIndexOf('?') != -1) {
+    urlChecked = urlChecked.slice(0, urlChecked.lastIndexOf('?'))
+  }
+  // 检索白名单
   const check = whiteList.filter((item) => {
-    return option.url == item
+    return urlChecked == item
   })
-  if (check.length != 0 && !user.userToken) {
-    // console.log('路由拦截')
+  // 路由守卫
+  if (check.length == 0 && !user.userToken) {
+    console.log('路由拦截')
     return uni.navigateTo({
       url: '/pages/login/login',
     })
   } else {
     // console.log('路由正常')
-    return routerMethod.call(this, option)
+    return routerMethod.call(this, option).catch((err) => {
+      console.log('路由跳转报错', err)
+    })
   }
 }
 

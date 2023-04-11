@@ -58,43 +58,43 @@ const pageState = reactive({
   title: '设置',
   abilityList: [
     {
-      key: '1',
+      key: 1,
       name: '更换头像',
       setFn: () => {
         proxy.$uri.navigateTo({ url: '/pages/mineChild/setAvatar/setAvatar' })
       },
     },
     {
-      key: '2',
+      key: 2,
       name: '修改昵称',
       setFn: () => {
         proxy.$uri.navigateTo({ url: '/pages/mineChild/setName/setName' })
       },
     },
     {
-      key: '3',
+      key: 3,
       name: '设置个性签名',
       setFn: () => {
         proxy.$uri.navigateTo({ url: '/pages/mineChild/setSign/setSign' })
       },
     },
     {
-      key: '4',
+      key: 4,
       name: '等级介绍',
       setFn: () => {
         proxy.$uri.navigateTo({ url: '/pages/mineChild/setLevel/setLevel' })
       },
     },
     {
-      key: '5',
+      key: 5,
       name: '我的地址',
       setFn: () => {
         proxy.$uri.navigateTo({ url: '/pages/mineChild/setAddress/setAddress' })
       },
     },
     {
-      key: '6',
-      name: '绑定邮箱',
+      key: 6,
+      name: '修改密码',
       setFn: () => {
         proxy.$uri.navigateTo({ url: '/pages/mineChild/setEmail/setEmail' })
       },

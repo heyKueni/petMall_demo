@@ -16,17 +16,22 @@
         </template>
       </a-headerSearch>
     </view>
-    <view class="content"></view>
+    <view class="content">
+      搜索
+    </view>
   </view>
 </template>
-
 <script setup>
 import { ref, getCurrentInstance } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
 
 const { proxy } = getCurrentInstance()
-
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const searchValue = ref('')
+
+onLoad((options) => {
+  searchValue.value = options.tag
+})
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ cpn fun
 // *--------------------------- f_search
@@ -48,5 +53,4 @@ const toMine = () => {
     })
 }
 </script>
-
 <style lang="scss"></style>

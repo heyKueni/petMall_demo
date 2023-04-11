@@ -19,7 +19,8 @@
     { "path": "pages/mineChild/setEmail/setEmail" },
     { "path": "pages/mineChild/setLevel/setLevel" },
     { "path": "pages/mineChild/setName/setName" },
-    { "path": "pages/mineChild/setSign/setSign" }
+    { "path": "pages/mineChild/setSign/setSign" },
+    { "path": "pages/search/search" }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",

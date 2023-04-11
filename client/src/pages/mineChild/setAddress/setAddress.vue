@@ -54,13 +54,13 @@
 </template>
 <script setup>
 import { reactive, getCurrentInstance } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onShow } from '@dcloudio/uni-app'
 
 const { proxy } = getCurrentInstance()
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const addressList = reactive([])
-onLoad(() => {
+onShow(() => {
   addressSelect()
 })
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ address select
@@ -96,12 +96,6 @@ const del = (aId) => {
   })
 }
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ address editor
-const addressEditor = reactive({
-  aId: '',
-  receiver: '',
-  tel: '',
-  address: '',
-})
 // *--------------------------- add
 const addAddress = () => {
   proxy.$uri.navigateTo({
@@ -109,7 +103,12 @@ const addAddress = () => {
   })
 }
 // *--------------------------- change
-const changeAddress = (aId) => {}
+const changeAddress = (aId) => {
+  // console.log('修改');
+  proxy.$uri.navigateTo({
+    url: '/pages/mineChild/setAddressEditor/setAddressEditor?aId=' + aId,
+  })
+}
 </script>
 <style lang="scss">
 .emptyArea {

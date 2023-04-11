@@ -1,5 +1,5 @@
 <template>
-  <view class="headerNormal">
+  <view class="headerSearch">
     <view class="header-left">
       <u-icon
         v-if="page.pageDelta"
@@ -9,13 +9,18 @@
         size="20px"
         @tap="back"
       ></u-icon>
-      <view class="header-title">
-        <slot name="left"></slot>
-      </view>
+      <u-avatar
+        v-show="!page.pageDelta"
+        :src="user.userInfo.uAvatar"
+        size="30"
+        @tap="f_fun('f_toMine')"
+      ></u-avatar>
     </view>
-
+    <view class="header-center">
+      <slot name="searchInput"></slot>
+    </view>
     <view class="header-right">
-      <slot name="right"></slot>
+      <text class="searchButton" @tap="f_fun('f_search')">搜索</text>
     </view>
   </view>
 </template>
@@ -23,21 +28,25 @@
 import useStore from '@/store/index'
 import { onShow } from '@dcloudio/uni-app'
 
-const { page } = useStore()
+const { user, page } = useStore()
+
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ cpn init
+const f_fun = defineEmits(['f_search', 'f_toMine'])
+
 onShow(() => {
   page.deltaChange()
 })
 
-// *--------------------------- back
-const back = () => {
+// *--------------------------- fun back
+function back() {
   uni.navigateBack({
     delta: 1,
   })
 }
+// *--------------------------- fun toMine
 </script>
-<style lang="scss">
-.headerNormal {
+<style lang="scss" scoped>
+.headerSearch {
   width: 700rpx;
   height: 85rpx;
   background-color: $theme_back;
@@ -45,22 +54,20 @@ const back = () => {
   align-items: center;
   justify-content: space-between;
   // position: fixed;
-  padding: 0 25rpx;
+  padding: 0 35rpx 0 20rpx;
   .header-left {
     display: flex;
     align-items: center;
-    .header-title {
-      color: #fff;
-      line-height: 24rpx;
-      font-size: 32rpx;
-    }
     .header-back {
-      padding-right: 20rpx;
+      padding-right: 10rpx;
     }
   }
   .header-right {
     font-size: 26rpx;
     color: #fff;
+  }
+  .searchButton {
+    font-size: 28rpx;
   }
 }
 </style>

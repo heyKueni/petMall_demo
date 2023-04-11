@@ -41,6 +41,7 @@ module.exports = {
     const result = await mineAndSetDao.selectAddress({
       uId,
     })
+    console.log(result)
     let resList = [...result]
     resList = resList.map((item) => {
       return {
@@ -60,6 +61,37 @@ module.exports = {
     })
     typeof result != 'undefined'
       ? res.json({ code: 200, msg: '删除成功' })
+      : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @添加
+  addAddress: async (req, res) => {
+    let data = {
+      uId: req.tokenInfo.userId,
+      ...req.body,
+    }
+    const result = await mineAndSetDao.addAddress(data)
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '添加成功' })
+      : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @查询被修改地址
+  addressEditorSelect: async (req, res) => {
+    const result = await mineAndSetDao.addressEditorSelect({
+      uId: req.tokenInfo.userId,
+      aId: req.body.aId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '查询成功', data: result[0] })
+      : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @修改
+  changeAddress: async (req, res) => {
+    const result = await mineAndSetDao.changeAddress({
+      uId: req.tokenInfo.userId,
+      ...req.body,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '修改成功' })
       : res.json({ code: 201, msg: '服务器响应错误' })
   },
 }

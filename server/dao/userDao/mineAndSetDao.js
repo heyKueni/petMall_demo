@@ -18,11 +18,34 @@ module.exports = {
   },
   // 查询地址
   selectAddress: (data) => {
-    const sql = `select aId,receiver,tel,address from user as u,user_address as ua where u.uId=ua.aWhoes and u.uId=?`
+    const sql = `select aId,receiver,tel,address from user_address where aWhoes=?`
     return query(sql, [data.uId])
   },
+  // 删除地址
   delAddress: (data) => {
-    const sql = `delete from user_address wheres aWhoes=? and aId=?`
+    const sql = `delete from user_address where aWhoes=? and aId=?`
     return query(sql, [data.uId, data.aId])
+  },
+  // 添加地址
+  addAddress: (data) => {
+    const sql = `insert into user_address value(null,?,?,?,null,?)`
+    return query(sql, [data.receiver, data.tel, data.address, data.uId])
+  },
+  // 查询被修改地址
+  addressEditorSelect: (data) => {
+    const sql = `select receiver,tel,address from user_address where aWhoes=? and aId=?`
+    return query(sql, [data.uId, data.aId])
+  },
+  // 修改地址
+  changeAddress: (data) => {
+    console.log(data)
+    const sql = `update user_address set receiver=?,tel=?,address=? where aWhoes=? and aId=?`
+    return query(sql, [
+      data.receiver,
+      data.tel,
+      data.address,
+      data.uId,
+      data.aId,
+    ])
   },
 }

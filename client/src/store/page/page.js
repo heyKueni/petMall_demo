@@ -9,8 +9,10 @@ const usePage = defineStore('page', {
     }
   },
   actions: {
-    deltaChange(length) {
-      length > 1 ? (this.pageDelta = true) : (this.pageDelta = false)
+    deltaChange() {
+      let pageList = getCurrentPages()
+      // console.log('检测页面栈', this.pageDelta)
+      pageList.length > 1 ? (this.pageDelta = true) : (this.pageDelta = false)
     },
   },
 })

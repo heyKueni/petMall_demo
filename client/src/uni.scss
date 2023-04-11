@@ -36,6 +36,14 @@ $theme_back: #79a186;
     height: 40rpx;
   }
 }
+.searchInput {
+  width: 490rpx;
+  height: 50rpx;
+  border-radius: 50rpx;
+  padding: 0 20rpx;
+  background-color: rgba(233, 233, 233, 0.4);
+  font-size: 24rpx;
+}
 body {
   background-color: rgb(249, 249, 249);
 }

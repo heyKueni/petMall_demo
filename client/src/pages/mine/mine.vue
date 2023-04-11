@@ -115,24 +115,6 @@ const pageState = reactive({
     },
     {
       key: 4,
-      name: '我的钱包',
-      icon: '',
-      path: '',
-      routerTo: () => {
-        console.log('我的钱包')
-      },
-    },
-    {
-      key: 5,
-      name: '打卡签到',
-      icon: '',
-      path: '',
-      routerTo: () => {
-        console.log('打卡签到')
-      },
-    },
-    {
-      key: 6,
       name: '我的订单',
       icon: '',
       path: '',
@@ -141,7 +123,16 @@ const pageState = reactive({
       },
     },
     {
-      key: 7,
+      key: 5,
+      name: '购物车',
+      icon: '',
+      path: '',
+      routerTo: () => {
+        console.log('购物车')
+      },
+    },
+    {
+      key: 6,
       name: '设置',
       icon: '',
       path: '',
@@ -166,10 +157,10 @@ onLoad(() => {
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log('宠物信息', res)
         if (res.data.code == 200) {
           pageState.petInfo = res.data.data[0]
-          console.log(pageState.petInfo)
+          // console.log(pageState.petInfo)
         }
       })
   }
