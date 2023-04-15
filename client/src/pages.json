@@ -10,6 +10,8 @@
     { "path": "pages/login/login" },
     { "path": "pages/index/index" },
     { "path": "pages/mall/mall" },
+    { "path": "pages/mallChild/comIntro/comIntro" },
+    { "path": "pages/mallChild/cart/cart" },
     { "path": "pages/forum/forum" },
     { "path": "pages/mine/mine" },
     { "path": "pages/mineChild/set/set" },
@@ -27,7 +29,8 @@
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8",
-    "navigationStyle": "custom"
+    "navigationStyle": "custom",
+    "scrollIndicator": "none"
   },
   "tabBar": {
     "color": "#cdcdcd",

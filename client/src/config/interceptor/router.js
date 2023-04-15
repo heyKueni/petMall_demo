@@ -11,6 +11,8 @@ const whiteList = [
   '/pages/mineChild/set/set',
   // 搜索页
   '/pages/search/search',
+  // 商品详情页
+  '/pages/mallChild/comIntro/comIntro',
 ]
 
 // 登录验证拦截

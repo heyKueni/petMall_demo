@@ -264,7 +264,7 @@ function submit() {
         data,
       })
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         uni.hideLoading()
         uni.$u.toast(res.data.msg)
         if (res.data.code == 200) {

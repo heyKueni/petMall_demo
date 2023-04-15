@@ -77,7 +77,7 @@
 </template>
 <script setup>
 import { reactive, getCurrentInstance, computed } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onShow } from '@dcloudio/uni-app'
 import useStore from '@/store/index'
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
@@ -145,9 +145,8 @@ const pageState = reactive({
   ],
 })
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ getPetInfo
-onLoad(() => {
-  let userToken = uni.getStorageSync('token')
-  if (userToken != '') {
+onShow(() => {
+  if (user.userToken != '') {
     proxy
       .$req({
         url: '/petA/checkPetExist',
@@ -157,14 +156,11 @@ onLoad(() => {
         },
       })
       .then((res) => {
-        console.log('宠物信息', res)
         if (res.data.code == 200) {
           pageState.petInfo = res.data.data[0]
-          // console.log(pageState.petInfo)
         }
       })
-  }
-  if (user.userToken == '') {
+  } else {
     user.userInfo = {}
   }
 })

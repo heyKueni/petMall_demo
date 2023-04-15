@@ -15,8 +15,8 @@ $theme_back: #79a186;
     width: 750rpx;
     height: 40rpx;
     background-color: $theme_back;
-    z-index: 999;
   }
+  z-index: 999;
 }
 .content {
   &::before {
