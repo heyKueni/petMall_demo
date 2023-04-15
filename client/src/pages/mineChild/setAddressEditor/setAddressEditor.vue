@@ -1,53 +1,55 @@
 <template>
-  <view class="header">
-    <a-headerNormal>
-      <template v-slot:right>
-        <text>{{ navigatorTitle }}</text>
-      </template>
-    </a-headerNormal>
-  </view>
-  <view class="content">
-    <!-- 表单 -->
-    <view class="formAddress">
-      <!-- model不能和ref重名############################################### -->
-      <u--form :model="addressInfo" :rules="rules" ref="addressForm">
-        <!-- 收件人 -->
-        <u-form-item prop="receiver" ref="item1">
-          <u--input
-            class="formInput"
-            v-model="addressInfo.receiver"
-            border="bottom"
-            clearable
-            placeholder="请输入收货人"
-          ></u--input>
-        </u-form-item>
-        <!-- 电话号码 -->
-        <u-form-item prop="tel" ref="item2">
-          <u--input
-            class="formInput"
-            v-model="addressInfo.tel"
-            border="bottom"
-            clearable
-            placeholder="请输入电话号码"
-          ></u--input>
-        </u-form-item>
-        <!-- 地址 -->
-        <u-form-item prop="address" ref="item3">
-          <u--input
-            class="formInput"
-            v-model="addressInfo.address"
-            border="bottom"
-            clearable
-            placeholder="请输入详细地址"
-          ></u--input>
-        </u-form-item>
-      </u--form>
+  <view>
+    <view class="header">
+      <a-headerNormal>
+        <template v-slot:right>
+          <text>{{ navigatorTitle }}</text>
+        </template>
+      </a-headerNormal>
     </view>
-    <!-- 按钮 -->
-    <view class="buttonArea">
-      <u-button class="addAddress" @tap="sendRequest">
-        确定
-      </u-button>
+    <view class="content">
+      <!-- 表单 -->
+      <view class="formAddress">
+        <!-- model不能和ref重名############################################### -->
+        <u--form :model="addressInfo" :rules="rules" ref="addressForm">
+          <!-- 收件人 -->
+          <u-form-item prop="receiver" ref="item1">
+            <u--input
+              class="formInput"
+              v-model="addressInfo.receiver"
+              border="bottom"
+              clearable
+              placeholder="请输入收货人"
+            ></u--input>
+          </u-form-item>
+          <!-- 电话号码 -->
+          <u-form-item prop="tel" ref="item2">
+            <u--input
+              class="formInput"
+              v-model="addressInfo.tel"
+              border="bottom"
+              clearable
+              placeholder="请输入电话号码"
+            ></u--input>
+          </u-form-item>
+          <!-- 地址 -->
+          <u-form-item prop="address" ref="item3">
+            <u--input
+              class="formInput"
+              v-model="addressInfo.address"
+              border="bottom"
+              clearable
+              placeholder="请输入详细地址"
+            ></u--input>
+          </u-form-item>
+        </u--form>
+      </view>
+      <!-- 按钮 -->
+      <view class="buttonArea">
+        <u-button class="addAddress" @tap="sendRequest">
+          确定
+        </u-button>
+      </view>
     </view>
   </view>
 </template>

@@ -1,54 +1,56 @@
 <template>
-  <view class="header">
-    <a-headerNormal>
-      <template v-slot:right><text>我的地址</text></template>
-    </a-headerNormal>
-  </view>
-  <view class="content">
-    <view><u-loading-page loadingText="加载中……"></u-loading-page></view>
-    <!-- 地址为空 -->
-    <view class="emptyArea" v-if="!addressList.length">
-      <u-empty
-        mode="list"
-        icon="http://cdn.uviewui.com/uview/empty/list.png"
-        width="220"
-        height="220"
-        text="还没有录入地址信息"
-        textColor="#79a186"
-      ></u-empty>
+  <view>
+    <view class="header">
+      <a-headerNormal>
+        <template v-slot:right><text>我的地址</text></template>
+      </a-headerNormal>
     </view>
-    <!-- 地址数据 @删除 @修改 -->
-    <view class="listArea" v-if="addressList.length">
-      <u-swipe-action :autoClose="true">
-        <view v-for="item in addressList" :key="item.aId">
-          <u-swipe-action-item :options="options" @tap="del(item.aId)">
-            <view class="swipe-action u-border-top u-border-bottom">
-              <view class="swipe-action__content">
-                <view class="addressItem">
-                  <view class="itemInfo">
-                    <view class="infoName">{{ item.receiver }}</view>
-                    <view class="infoTel">{{ item.tel }}</view>
-                    <view class="infoAddress">{{ item.address }}</view>
-                  </view>
-                  <view class="itemButton">
-                    <u-icon
-                      name="edit-pen"
-                      color="#79a186"
-                      size="28"
-                      data-tag="item.aId"
-                      @tap="changeAddress(item.aId)"
-                    ></u-icon>
+    <view class="content">
+      <view><u-loading-page loadingText="加载中……"></u-loading-page></view>
+      <!-- 地址为空 -->
+      <view class="emptyArea" v-if="!addressList.length">
+        <u-empty
+          mode="list"
+          icon="http://cdn.uviewui.com/uview/empty/list.png"
+          width="220"
+          height="220"
+          text="还没有录入地址信息"
+          textColor="#79a186"
+        ></u-empty>
+      </view>
+      <!-- 地址数据 @删除 @修改 -->
+      <view class="listArea" v-if="addressList.length">
+        <u-swipe-action :autoClose="true">
+          <view v-for="item in addressList" :key="item.aId">
+            <u-swipe-action-item :options="options" @tap="del(item.aId)">
+              <view class="swipe-action u-border-top u-border-bottom">
+                <view class="swipe-action__content">
+                  <view class="addressItem">
+                    <view class="itemInfo">
+                      <view class="infoName">{{ item.receiver }}</view>
+                      <view class="infoTel">{{ item.tel }}</view>
+                      <view class="infoAddress">{{ item.address }}</view>
+                    </view>
+                    <view class="itemButton">
+                      <u-icon
+                        name="edit-pen"
+                        color="#79a186"
+                        size="28"
+                        data-tag="item.aId"
+                        @tap="changeAddress(item.aId)"
+                      ></u-icon>
+                    </view>
                   </view>
                 </view>
               </view>
-            </view>
-          </u-swipe-action-item>
-        </view>
-      </u-swipe-action>
-    </view>
-    <!-- 添加地址 -->
-    <view class="buttonArea">
-      <u-button class="addAddress" @tap="addAddress">添加地址</u-button>
+            </u-swipe-action-item>
+          </view>
+        </u-swipe-action>
+      </view>
+      <!-- 添加地址 -->
+      <view class="buttonArea">
+        <u-button class="addAddress" @tap="addAddress">添加地址</u-button>
+      </view>
     </view>
   </view>
 </template>

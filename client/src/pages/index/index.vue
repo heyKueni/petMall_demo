@@ -22,11 +22,16 @@
 
 <script setup>
 import { ref, getCurrentInstance } from 'vue'
+import { onShow } from '@dcloudio/uni-app'
 
 const { proxy } = getCurrentInstance()
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const searchValue = ref('')
+
+onShow(() => {
+  searchValue.value = ''
+})
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ cpn fun
 // *--------------------------- f_search
