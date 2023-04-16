@@ -29,6 +29,8 @@ router.post('/changeName', tokenCheck, mineAndSetCtrl.changeName)
 router.post('/changeSign', tokenCheck, mineAndSetCtrl.changeSign)
 // 收货地址 @查询
 router.get('/selectAddress', tokenCheck, mineAndSetCtrl.selectAddress)
+// 收货地址 @查询单个
+router.get('/selectAddressOne', tokenCheck, mineAndSetCtrl.selectAddressOne)
 // 收货地址 @删除
 router.post('/delAddress', tokenCheck, mineAndSetCtrl.delAddress)
 // 收货地址 @添加

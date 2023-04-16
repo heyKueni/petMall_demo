@@ -15,7 +15,7 @@ const request = (options) => {
         resolve(res)
       },
       fail: (err) => {
-        reject(err)
+        uni.$u.toast('请求超时')
       },
     })
   })

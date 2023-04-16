@@ -1,6 +1,7 @@
 {
   "easycom": {
     "custom": {
+      "^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
       "^u-(.*)": "uview-plus/components/u-$1/u-$1.vue",
       "^a-(.*)": "@/components/a/a-$1.vue"
     }
@@ -12,6 +13,7 @@
     { "path": "pages/mall/mall" },
     { "path": "pages/mallChild/comIntro/comIntro" },
     { "path": "pages/mallChild/cart/cart" },
+    { "path": "pages/mallChild/pay/pay" },
     { "path": "pages/forum/forum" },
     { "path": "pages/mine/mine" },
     { "path": "pages/mineChild/set/set" },

@@ -98,12 +98,20 @@
         </view>
       </view>
     </view>
+    <view class="backToTop">
+      <u-back-top
+        :scroll-top="scrollTop"
+        :iconStyle="{ color: '#fff' }"
+        :customStyle="{ backgroundColor: '#79a186' }"
+        z-index="1999"
+      ></u-back-top>
+    </view>
   </view>
 </template>
 
 <script setup>
 import { ref, reactive, getCurrentInstance } from 'vue'
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow, onPageScroll } from '@dcloudio/uni-app'
 import useStore from '../../../store'
 
 const { proxy } = getCurrentInstance()
@@ -112,6 +120,7 @@ const { user } = useStore()
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ page init
 const searchValue = ref('')
 const isCollected = ref(false)
+const scrollTop = ref(0)
 const cId = ref(0)
 
 onLoad((options) => {
@@ -124,6 +133,10 @@ onLoad((options) => {
 
 onShow(() => {
   searchValue.value = ''
+})
+
+onPageScroll((e) => {
+  scrollTop.value = e.scrollTop
 })
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ cpn fun

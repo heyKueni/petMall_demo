@@ -41,7 +41,6 @@ module.exports = {
     const result = await mineAndSetDao.selectAddress({
       uId,
     })
-    console.log(result)
     let resList = [...result]
     resList = resList.map((item) => {
       return {
@@ -50,6 +49,21 @@ module.exports = {
       }
     })
     res.json({ code: 200, msg: '查询成功', list: [...resList] })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @查询单个
+  selectAddressOne: async (req, res) => {
+    let uId = req.tokenInfo.userId
+    let addressOne = null
+    const result = await mineAndSetDao.selectAddress({
+      uId,
+    })
+    if (result.length) {
+      addressOne = result[0]
+      addressOne.tel = addressOne.tel.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+    } else {
+      addressOne = undefined
+    }
+    res.json({ code: 200, msg: '查询成功', addressOne })
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 收货地址 @删除
   delAddress: async (req, res) => {

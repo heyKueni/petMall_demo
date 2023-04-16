@@ -90,7 +90,6 @@ const pageState = reactive({
       key: 1,
       name: '我的帖子',
       icon: '',
-      path: '',
       routerTo: () => {
         console.log('我的帖子')
       },
@@ -99,7 +98,6 @@ const pageState = reactive({
       key: 2,
       name: '我的收藏',
       icon: '',
-      path: '',
       routerTo: () => {
         console.log('我的收藏')
       },
@@ -108,7 +106,6 @@ const pageState = reactive({
       key: 3,
       name: '通知消息',
       icon: '',
-      path: '',
       routerTo: () => {
         console.log('通知消息')
       },
@@ -117,7 +114,6 @@ const pageState = reactive({
       key: 4,
       name: '我的订单',
       icon: '',
-      path: '',
       routerTo: () => {
         console.log('我的订单')
       },
@@ -126,18 +122,18 @@ const pageState = reactive({
       key: 5,
       name: '购物车',
       icon: '',
-      path: '',
       routerTo: () => {
-        console.log('购物车')
+        proxy.$uri.navigateTo({
+          url: '/pages/mallChild/cart/cart',
+        })
       },
     },
     {
       key: 6,
       name: '设置',
       icon: '',
-      path: '',
       routerTo: () => {
-        return proxy.$uri.navigateTo({
+        proxy.$uri.navigateTo({
           url: '/pages/mineChild/set/set',
         })
       },
