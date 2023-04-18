@@ -93,7 +93,7 @@
             <view class="cart btn u-line-1" @tap="addToCart(cId)">
               加入购物车
             </view>
-            <view class="buy btn u-line-1" @tap="pay()">立即购买</view>
+            <view class="buy btn u-line-1" @tap="payNow">立即购买</view>
           </view>
         </view>
       </view>
@@ -125,6 +125,7 @@ const cId = ref(0)
 
 onLoad((options) => {
   cId.value = options.cId
+  // console.log('options', options)
   comIntroSelect(cId.value)
   if (user.userToken) {
     isCollect(cId.value)
@@ -197,10 +198,18 @@ const addToCart = (cId) => {
     proxy.$uri.navigateTo({ url: '/pages/login/login' })
   }
 }
-// *--------------------------- pay
-const pay = (options) => {
+// *--------------------------- payNow
+const payNow = () => {
+  const data = { cId: cId.value }
   if (user.userToken) {
-    console.log('立即购买')
+    proxy.$req({ url: '/mall/payNow', method: 'POST', data }).then((res) => {
+      if (res.data.code == 200) {
+        uni.$u.toast(res.data.msg)
+        proxy.$uri.navigateTo({
+          url: '/pages/mallChild/pay/pay?order=' + res.data.result,
+        })
+      }
+    })
   } else {
     proxy.$uri.navigateTo({ url: '/pages/login/login' })
   }

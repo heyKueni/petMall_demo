@@ -16,6 +16,8 @@
     { "path": "pages/mallChild/pay/pay" },
     { "path": "pages/forum/forum" },
     { "path": "pages/mine/mine" },
+    { "path": "pages/mineChild/order/order" },
+    { "path": "pages/mineChild/orderIntro/orderIntro" },
     { "path": "pages/mineChild/set/set" },
     { "path": "pages/mineChild/setAddress/setAddress" },
     { "path": "pages/mineChild/setAddressEditor/setAddressEditor" },

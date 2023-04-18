@@ -287,7 +287,6 @@ const selectAddressAll = () => {
       width: 630rpx;
       height: auto;
       background-color: #fff;
-      box-shadow: 0 2rpx 2rpx 1rpx rgba(0, 0, 0, 0.2);
       padding: 15rpx;
       margin-top: 20rpx;
       border-radius: 12rpx;

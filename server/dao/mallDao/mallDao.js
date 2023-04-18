@@ -83,7 +83,6 @@ module.exports = {
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 支付订单 @提交订单
   submitOrder: (data) => {
-    console.log(data)
     const sql = `update order_out set receiver=?,tel=?,address=?,ooCreateTime=?,isPayed=? where uId=? and ooId=?`
     return query(sql, [
       data.receiver,
@@ -94,5 +93,29 @@ module.exports = {
       data.uId,
       data.ooId,
     ])
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 查询订单 @已支付
+  selectOrder_1: (data) => {
+    const selectRes = `so.ooId,so.receiver,so.tel,so.address,so.allCost,so.ooCreateTime,so.isPayed,oi.num,oi.cId,oi.oiId`
+    const sql_o = `select * from order_out where uId=? and isPayed=1`
+    const sql_i = `select ${selectRes} from (${sql_o}) as so join order_in as oi where so.ooId=oi.ooId`
+    const sql = `select * from (${sql_i}) as si join commodity as c where si.cId = c.cId`
+    return query(sql, [data.uId])
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 查询订单 @未支付
+  orderRes_0: (data) => {
+    const sql_order = `select oo.ooId,oi.cId,oi.oiId,oi.num from order_out as oo join order_in as oi where uId=? and isPayed=0 and oo.ooId=oi.ooId`
+    const sql = `select c.cId,c.cIntro_text,c.cImg,c.cPrice,x.ooId,x.oiId,x.num from (${sql_order}) as x join commodity as c where x.cId=c.cId`
+    return query(sql, [data.uId])
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的订单 @查询订单详情
+  selectOrderIntro: (data) => {
+    const sql_order = `select oo.ooId,oo.receiver,oo.tel,oo.address,oo.ooCreateTime,oi.oiId,oi.num,oi.cId from order_out as oo join order_in as oi where oi.oiId=? and oi.ooId=oo.ooId`
+    const sql = `select * from (${sql_order}) as x join commodity as c where x.cId=c.cId`
+    return query(sql, [data.oiId])
+  },
+  delOrder_0: (data) => {
+    const sql = `delete from order_out where uId=? and ooId=?`
+    return query(sql, [data.uId, data.ooId])
   },
 }

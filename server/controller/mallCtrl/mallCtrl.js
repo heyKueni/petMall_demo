@@ -112,6 +112,39 @@ module.exports = {
           msg: '服务器响应错误',
         })
   },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 商品详情页 @立即购买
+  payNow: async (req, res) => {
+    // 待支付订单生成时间
+    let timeData = new Date()
+    // 订单号 @order_out 随机六位数+总毫秒数+年月日时分秒
+    let ooId =
+      '' +
+      Math.floor(Math.random() * 1000000) +
+      timeData.getTime() +
+      timeData.getFullYear() +
+      timeData.getMonth() +
+      timeData.getDate() +
+      timeData.getHours() +
+      timeData.getMinutes() +
+      timeData.getSeconds()
+    // 订单总价
+    const comOne = await mallDao.selectOneCom({ cId: req.body.cId })
+    const allCost = comOne[0].cPrice.toFixed(2)
+    // 添加未支付订单 @order_out 大订单
+    await mallDao.addNoPayedOrder({
+      ooId,
+      timeData,
+      allCost,
+      uId: req.tokenInfo.userId,
+    })
+    // 添加未支付订单 @order_in 小订单
+    await mallDao.addOrderIn({
+      num: 1,
+      cId: req.body.cId,
+      ooId,
+    })
+    res.json({ code: 200, msg: '订单生成成功', result: ooId })
+  },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 购物车 @查询
   selectCartAll: async (req, res) => {
     const result = await mallDao.selectCartAll({
@@ -169,6 +202,7 @@ module.exports = {
         cId: item,
         uId: data.uId,
       })
+      console.log(comOne)
       allCost += comOne[0].cPrice * cumOneInCart[0].num
       if (index == data.payList.length - 1) {
         // 此处有未知的异步操作
@@ -246,5 +280,42 @@ module.exports = {
     typeof result != 'undefined'
       ? res.json({ code: 200, msg: '支付成功' })
       : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的订单 @查询已支付订单
+  orderRes_1: async (req, res) => {
+    const result = await mallDao.selectOrder_1({
+      uId: req.tokenInfo.userId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '查询成功', result })
+      : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的订单 @查询未支付订单
+  orderRes_0: async (req, res) => {
+    const result = await mallDao.orderRes_0({
+      uId: req.tokenInfo.userId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '查询成功', result })
+      : res.json({ code: 201, msg: '服务器响应失败' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的订单 @查询订单详情
+  selectOrderIntro: async (req, res) => {
+    const result = await mallDao.selectOrderIntro({
+      oiId: req.query.oiId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '查询成功', result: result[0] })
+      : res.json({ code: 201, msg: '服务器响应失败' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的订单 @删除未支付订单
+  delOrder_0: async (req, res) => {
+    const result = await mallDao.delOrder_0({
+      ooId: req.body.ooId,
+      uId: req.tokenInfo.userId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '删除成功' })
+      : res.json({ code: 200, msg: '服务器响应失败' })
   },
 }

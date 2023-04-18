@@ -115,7 +115,9 @@ const pageState = reactive({
       name: '我的订单',
       icon: '',
       routerTo: () => {
-        console.log('我的订单')
+        proxy.$uri.navigateTo({
+          url: '/pages/mineChild/order/order',
+        })
       },
     },
     {

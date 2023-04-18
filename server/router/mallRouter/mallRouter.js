@@ -5,6 +5,7 @@ const tokenCheck = require('../../middleware/tokenCheck')
 
 const mallCtrl = require('../../controller/mallCtrl/mallCtrl')
 const { token } = require('morgan')
+const mallDao = require('../../dao/mallDao/mallDao')
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ accountCtrl
 // 市集 @查询 商品分类
@@ -19,6 +20,8 @@ router.get('/isCollect', tokenCheck, mallCtrl.isCollect)
 router.post('/collect', tokenCheck, mallCtrl.collect)
 // 商品详情页 @添加到购物车
 router.post('/addToCart', tokenCheck, mallCtrl.addToCart)
+// 商品详情页 @立即购买
+router.post('/payNow', tokenCheck, mallCtrl.payNow)
 // 购物车 @查询
 router.get('/selectCartAll', tokenCheck, mallCtrl.selectCartAll)
 // 购物车 @修改数量
@@ -31,5 +34,13 @@ router.post('/toPayFromCart', tokenCheck, mallCtrl.toPayFromCart)
 router.post('/SelectOrderOne', tokenCheck, mallCtrl.SelectOrderOne)
 // 支付订单 @提交订单
 router.post('/submitOrder', tokenCheck, mallCtrl.submitOrder)
+// 我的订单 @查询已支付订单
+router.get('/orderRes_1', tokenCheck, mallCtrl.orderRes_1)
+// 我的订单 @查询未支付订单
+router.get('/orderRes_0', tokenCheck, mallCtrl.orderRes_0)
+// 我的订单 @查询订单详情
+router.get('/selectOrderIntro', tokenCheck, mallCtrl.selectOrderIntro)
+// 我的订单 @删除未支付订单
+router.post('/delOrder_0', tokenCheck, mallCtrl.delOrder_0)
 
 module.exports = router
