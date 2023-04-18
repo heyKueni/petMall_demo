@@ -114,6 +114,7 @@ module.exports = {
     const sql = `select * from (${sql_order}) as x join commodity as c where x.cId=c.cId`
     return query(sql, [data.oiId])
   },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 删除订单 @未支付
   delOrder_0: (data) => {
     const sql = `delete from order_out where uId=? and ooId=?`
     return query(sql, [data.uId, data.ooId])
