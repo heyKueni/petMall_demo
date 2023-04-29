@@ -1,6 +1,23 @@
 const query = require('../../utils/dbQuery')
 
 module.exports = {
+  // 我的收藏 @查询-商品
+  collectComRes: (data) => {
+    const sql_collect = `select * from collection_com where uId=?`
+    const sql = `select * from (${sql_collect}) as sc join commodity as c where sc.cId=c.cId`
+    return query(sql, [data.uId])
+  },
+  // 我的收藏 @查询-帖子
+  collectPostRes: (data) => {
+    const sql_collect = `select * from collection_com where uId=?`
+    const sql = `select * from (${sql_collect}) as sc join commodity as c where sc.cId=c.cId`
+    return query(sql, [data.uId])
+  },
+  // 我的收藏 @删除-商品
+  delCollectCom:(data)=>{
+    const sql =`delete from collection_com where collectCId=? and uId=?`
+    return query(sql,[data.collectCId,data.uId])
+  },
   // 上传头像 @更改数据库图片路径地址
   avatarUpload: (data) => {
     const sql = `update user set uAvatar=? where uId=?`

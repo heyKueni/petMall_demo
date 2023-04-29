@@ -56,8 +56,14 @@
       </view>
       <view class="BLANK"></view>
     </view>
-    <!-- 购物车为空 -->
-    <view class="empty_tip" v-if="!cartData.comList.length"></view>
+    <view class="empty">
+      <u-empty
+        mode="car"
+        icon="http://cdn.uviewui.com/uview/empty/car.png"
+        v-if="!cartData.comList.length"
+      ></u-empty>
+    </view>
+
     <button class="empty_toMall" @tap="toMall" v-if="!cartData.comList.length">
       前往市集
     </button>
@@ -239,25 +245,22 @@ const selectCartAll = () => {
   height: 110rpx;
   // background-color: red;
 }
-.empty_tip {
-  width: 750rpx;
-  height: 500rpx;
-  position: fixed;
-  top: 380rpx;
-  left: -100rpx;
-  background-image: url('../../../common/img/cartEmpty.png');
-}
 .empty_toMall {
   width: 250rpx;
-  height: 70rpx;
-  font-size: 30rpx;
-  line-height: 70rpx;
-  border-radius: 70rpx;
+  height: 60rpx;
+  font-size: 25rpx;
+  line-height: 60rpx;
+  border-radius: 60rpx;
   position: fixed;
   top: 920rpx;
   left: 250rpx;
   background-color: red;
   color: #fff;
+}
+.empty {
+  position: fixed;
+  top: 480rpx;
+  left: 220rpx;
 }
 .cart_title {
   width: 700rpx;

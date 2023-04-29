@@ -10,12 +10,22 @@ const mineAndSetCtrl = require('../../controller/userCtrl/mineAndSetCtrl')
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ accountCtrl
 // 邮箱登录注册
 router.post('/loginE', accountCtrl.loginE)
-// 邮箱验证码
-router.post('/loginCode', accountCtrl.loginCode)
 // 密码登录
 router.post('/loginA', accountCtrl.loginA)
+// 邮箱验证码 @登录
+router.post('/loginCode', accountCtrl.loginCode)
+// 邮箱验证码 @注册
+router.post('/registerCode', accountCtrl.registerCode)
+// 邮箱验证码 @修改密码
+router.post('/registerCode', accountCtrl.pwdCode)
 
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ mineAndSetCtrl
+// *--------------------------- COLLECTION
+// 我的收藏 @查询
+router.get('/collectRes', tokenCheck, mineAndSetCtrl.collectRes)
+// 我的收藏 @删除
+router.post('/delCollectCom', tokenCheck, mineAndSetCtrl.delCollectCom)
+// *--------------------------- SET
 // 修改头像
 router.post(
   '/avatarChange',

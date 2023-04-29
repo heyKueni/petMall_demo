@@ -145,7 +145,7 @@
     </view>
     <view class="login-bottom" v-if="!pageState.emailLogin">
       <navigator
-        url="/pages/"
+        url="/pages/register/register"
         open-type="navigate"
         hover-class="navigator-hover"
       >
@@ -240,15 +240,14 @@ function submit() {
         data,
       })
       .then((res) => {
-        user.addLoginState(res.data)
+        console.log(res)
         uni.$u.toast(res.data.msg)
         if (res.data.code == 200) {
+          user.addLoginState(res.data)
           // 登录 - 前往首页
           uni.switchTab({
             url: '/pages/index/index',
           })
-        } else if (res.data.code == 203) {
-          // 注册 - 前往注册引导
         }
       })
   } else {
@@ -264,7 +263,7 @@ function submit() {
         data,
       })
       .then((res) => {
-        // console.log(res)
+        console.log(res)
         uni.hideLoading()
         uni.$u.toast(res.data.msg)
         if (res.data.code == 200) {

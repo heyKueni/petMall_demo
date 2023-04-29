@@ -2,6 +2,26 @@ const accountDao = require('../../dao/userDao/accountDao')
 const mineAndSetDao = require('../../dao/userDao/mineAndSetDao')
 
 module.exports = {
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的收藏 @查询
+  collectRes: async (req, res) => {
+    let data = { uId: req.tokenInfo.userId, current: req.query.current }
+    const result = data.current
+      ? await mineAndSetDao.collectPostRes(data)
+      : await mineAndSetDao.collectComRes(data)
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '修改成功', result })
+      : res.json({ code: 201, msg: '服务器响应失败' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的收藏 @删除
+  delCollectCom: async (req, res) => {
+    const result = await mineAndSetDao.delCollectCom({
+      uId: req.tokenInfo.userId,
+      collectCId: req.body.collectCId,
+    })
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '删除成功' })
+      : res.json({ code: 201, msg: '服务器响应失败' })
+  },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 修改头像
   avatarChange: async (req, res) => {
     let uId = req.tokenInfo.userId

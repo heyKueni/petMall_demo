@@ -99,7 +99,9 @@ const pageState = reactive({
       name: '我的收藏',
       icon: '',
       routerTo: () => {
-        console.log('我的收藏')
+        proxy.$uri.navigateTo({
+          url: '/pages/mineChild/collection/collection',
+        })
       },
     },
     {
@@ -177,7 +179,7 @@ const petAge = computed(() => {
   }
 })
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .content {
   display: flex;
   flex-direction: column;
