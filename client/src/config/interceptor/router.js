@@ -13,6 +13,10 @@ const whiteList = [
   '/pages/search/search',
   // 商品详情页
   '/pages/mallChild/comIntro/comIntro',
+  // 领养详情页
+  '/pages/forumChild/adopt',
+  // 帖子详情页
+  '/pages/forumChild/post',
 ]
 
 // 登录验证拦截

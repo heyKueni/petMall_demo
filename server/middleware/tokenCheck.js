@@ -10,23 +10,14 @@ const secretKey = require('../config/tokenConfig')
 
 const tokenCheck = async (req, res, next) => {
   let token = req.headers['authorization']
-  console.log('token中间件', token)
-  if (!token) {
-    // return res.status(401).end()
-    console.log(111)
-    res.json({
-      code: cErr._4790.code,
-      msg: cErr._4790.msg,
-    })
-  }
-
   try {
     // 把用户信息读取出来 挂载到req请求对象 往后继续执行
-    req.tokenInfo = await verify(token, secretKey)
-    // console.log('tokenInfo', req.tokenInfo)
-    next()
+    let result = await verify(token, secretKey)
+    if (result) {
+      req.tokenInfo = result
+      next()
+    }
   } catch (error) {
-    // return res.status(401).end()
     res.json({
       code: cErr._4790.code,
       msg: cErr._4790.msg,

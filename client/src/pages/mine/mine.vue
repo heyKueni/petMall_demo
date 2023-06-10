@@ -2,7 +2,7 @@
   <view class="header"></view>
   <view class="mainBody" show-scrollbar="false">
     <view class="mine-header">
-      <view class="mine-header-level">{{ user.userInfo.uLevel }}</view>
+      <view class="mine-header-level">{{ user.userInfo.ulName }}</view>
       <view class="mine-header-name">{{ user.userInfo.uName || '游客' }}</view>
       <view>
         <u-avatar
@@ -13,7 +13,7 @@
         ></u-avatar>
       </view>
     </view>
-    <view class="mine-content-doc">
+    <view class="mine-content-doc" @tap="toPetPage">
       <view class="mine-content-doc-header">
         <view class="doc-header-name">
           <image
@@ -25,7 +25,10 @@
         </view>
         <text class="doc-button">添加宠物</text>
       </view>
-      <view class="mine-content-doc-card" v-if="user.userToken == ''">
+      <view
+        class="mine-content-doc-card"
+        v-if="JSON.stringify(pageState.petInfo) == '{}'"
+      >
         <image
           class="empty-pet-card ePet-1"
           src="../../static/icon/q-pig.png"
@@ -40,7 +43,7 @@
       </view>
       <view
         class="mine-content-doc-card"
-        v-if="JSON.stringify(pageState.petInfo) != '{}' && user.userToken != ''"
+        v-if="JSON.stringify(pageState.petInfo) != '{}'"
       >
         <view class="doc-card-info">
           <view class="doc-card-info-name">
@@ -91,7 +94,9 @@ const pageState = reactive({
       name: '我的帖子',
       icon: '',
       routerTo: () => {
-        console.log('我的帖子')
+        proxy.$uri.navigateTo({
+          url: '/pages/mineChild/myPost/myPost',
+        })
       },
     },
     {
@@ -109,7 +114,9 @@ const pageState = reactive({
       name: '通知消息',
       icon: '',
       routerTo: () => {
-        console.log('通知消息')
+        proxy.$uri.navigateTo({
+          url: '/pages/mineChild/message/message',
+        })
       },
     },
     {
@@ -156,12 +163,15 @@ onShow(() => {
         },
       })
       .then((res) => {
-        if (res.data.code == 200) {
+        console.log('/petA/checkPetExist => ', res)
+        if (res.data.code == 200 && res.data.data.length) {
           pageState.petInfo = res.data.data[0]
+        } else {
+          pageState.petInfo = {}
         }
       })
   } else {
-    user.userInfo = {}
+    user.resetLoginState()
   }
 })
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ petAge
@@ -178,6 +188,12 @@ const petAge = computed(() => {
     return parseInt(result / 12) + '岁' + (result % 12) + '个月'
   }
 })
+// ?+++++++++++++++++++++++++++++++++++++++++++++++ toPetPage
+const toPetPage = () => {
+  proxy.$uri.navigateTo({
+    url: '/pages/mineChild/pet/pet?uId=' + user.userInfo.uId,
+  })
+}
 </script>
 <style lang="scss" scoped>
 .content {

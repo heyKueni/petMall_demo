@@ -13,10 +13,16 @@ module.exports = {
     const sql = `select * from (${sql_collect}) as sc join commodity as c where sc.cId=c.cId`
     return query(sql, [data.uId])
   },
+  // 查询帖子收藏
+  collectPostSelect: (data) => {
+    const sql_collect = `select cp.collectPId,cp.poId,cp.uId,p.poTitle,p.poCreateTime from collection_post cp join post p where cp.poId=p.poId`
+    const sql = `select * from (${sql_collect}) sss join user u where sss.uId=u.uId and sss.uId=?`
+    return query(sql, [data.uId])
+  },
   // 我的收藏 @删除-商品
-  delCollectCom:(data)=>{
-    const sql =`delete from collection_com where collectCId=? and uId=?`
-    return query(sql,[data.collectCId,data.uId])
+  delCollectCom: (data) => {
+    const sql = `delete from collection_com where collectCId=? and uId=?`
+    return query(sql, [data.collectCId, data.uId])
   },
   // 上传头像 @更改数据库图片路径地址
   avatarUpload: (data) => {

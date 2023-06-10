@@ -17,23 +17,35 @@
       </a-headerSearch>
     </view>
     <view class="content">
-      <!-- BLANK -->
-      <view class="blank"></view>
-      <!-- 分段器 -->
-      <view class="currentPicker">
-        <u-subsection
-          :list="searchContent.searchContentList"
-          :current="searchContent.current"
-          activeColor="#79a186"
-          inactiveColor="#ffffff"
-          bgColor="#79a186"
-          @change="sectionChange"
-        ></u-subsection>
+      <view class="collectContent" v-if="searchData.list.length">
+        <view
+          class="collect_item"
+          v-for="item in searchData.list"
+          :key="item.cId"
+        >
+          <u--image
+            :showLoading="true"
+            :src="item.cImg"
+            radius="12rpx"
+            width="80px"
+            height="80px"
+            @tap="toComIntro(item.cId)"
+          ></u--image>
+          <view class="collect_item_right">
+            <view class="collect_item_name" @tap="toComIntro(item.cId)">
+              {{ item.cIntro_text }}
+            </view>
+            <view class="collect_item_bottom">
+              <view class="collect_item_price">
+                ¥ {{ item.cPrice.toFixed(2) }}
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
       <!-- 无数据 -->
-      <view class="emptyView">
+      <view class="emptyView" v-else>
         <u-empty
-          v-if="searchResult.length == 0"
           icon="http://cdn.uviewui.com/uview/empty/search.png"
           text="没有查询到相关内容"
           textSize="16"
@@ -70,7 +82,6 @@ onPageScroll((e) => {
 // *--------------------------- f_search
 const search = () => {
   if (searchValue.value) {
-    searchContent.current = 0
     searchAll(searchValue.value)
   } else {
     uni.$u.toast('搜索内容为空，喵~')
@@ -88,29 +99,29 @@ const toMine = () => {
 }
 // ?+++++++++++++++++++++++++++++++++++++++++++++++ search content
 // *--------------------------- 搜索结果 数据
-const searchResult = reactive([])
-// *--------------------------- 分段器
-const searchContent = reactive({
-  current: 0,
-  searchContentList: [{ name: '商品' }, { name: '帖子' }, { name: '用户' }],
-})
-const sectionChange = (index) => {
-  searchContent.current = index
-}
+const searchData = reactive({ list: [] })
 // *--------------------------- req searchAll
 const searchAll = async (value) => {
-  // console.log('触发搜索请求')
-  let data = { searchValue: value }
-  searchResult.length = 0
+  searchData.list.length = 0
   await proxy
-    .$req({ url: '/userA/searchAll', method: 'GET', data })
+    .$req({
+      url: '/userA/searchAll',
+      method: 'GET',
+      data: { searchValue: value },
+    })
     .then((res) => {
+      uni.$u.toast(res.data.msg)
       if (res.data.code == 200) {
-        uni.$u.toast(res.data.msg)
-      } else {
-        uni.$u.toast(res.data.msg)
+        searchData.list = [...res.data.list]
+        console.log(searchData.list)
       }
     })
+}
+// *--------------------------- toComIntro
+const toComIntro = (cId) => {
+  proxy.$uri.navigateTo({
+    url: '/pages/mallChild/comIntro/comIntro?cId=' + cId,
+  })
 }
 </script>
 <style lang="scss" scoped>
@@ -133,5 +144,53 @@ const searchAll = async (value) => {
 }
 .emptyView {
   margin-top: 320rpx;
+}
+.collectContent {
+  width: 700rpx;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25rpx;
+}
+.collect_item {
+  width: 660rpx;
+  height: auto;
+  padding: 20rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2px 15rpx #eeeeee;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25rpx;
+}
+.collect_item_right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 20rpx;
+  .collect_item_name {
+    font-size: 24rpx;
+    padding-bottom: 20rpx;
+  }
+}
+.collect_item_bottom {
+  width: 500rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .collect_item_price {
+    color: red;
+  }
+  .collect_item_button {
+    width: 130rpx;
+    height: 50rpx;
+    line-height: 50rpx;
+    border-radius: 50rpx;
+    font-size: 28rpx;
+    color: #fff;
+    background-color: red;
+    margin: 0 20rpx 0 0;
+  }
 }
 </style>

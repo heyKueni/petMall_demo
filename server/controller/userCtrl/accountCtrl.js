@@ -1,11 +1,22 @@
-// const cErr = require('../../config/errConfig')
-
 const accountDao = require('../../dao/userDao/accountDao')
 const sendMail = require('../../utils/email')
 const randomStr = require('../../utils/randomStr')
 const createToken = require('../../utils/createToken')
+const { query } = require('express')
 
 module.exports = {
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 轮播图
+  mapSelect: async (req, res) => {
+    let result = await accountDao.mapSelect()
+    typeof result != 'undefined'
+      ? res.json({ code: 200, msg: '查询成功', list: [...result] })
+      : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 搜索
+  searchAll: async (req, res) => {
+    const result = await accountDao.searchAll(req.query)
+    res.json({ code: 200, msg: '查询成功', list: [...result] })
+  },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 邮箱登录注册
   loginE: async (req, res) => {
     // *--------------------------- 用户邮箱登录的请求信息 @查询 -email -codeHealth
@@ -84,10 +95,12 @@ module.exports = {
             emailId: codeRow.emailId,
             codeHealth: 0,
           })
+          const userRow = await accountDao.checkAccountExist(req.body)
+          console.log(userRow)
           res.json({
             code: 200,
             msg: '注册成功',
-            ...createToken(userByEmail[0]),
+            ...createToken(userRow[0]),
           })
         }
       }
@@ -119,6 +132,81 @@ module.exports = {
           msg: '登陆成功',
           ...result,
         })
+      }
+    }
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 注册
+  register: async (req, res) => {
+    let result1 = await accountDao.checkBeforeRegister(req.body)
+    if (result1.length) {
+      res.json({ code: 201, msg: '账号或邮箱已被注册' })
+    } else {
+      // *--------------------------- 用户邮箱登录的请求信息 @查询 -email -codeHealth
+      const codeDb = await accountDao.checkCodeExist(req.body)
+      const codeRow = codeDb[codeDb.length - 1] || {
+        emailCode: '',
+        eCreateTime: '',
+      }
+      // *--------------------------- 验证码匹配 @判断 -emailCode
+      const validCode = codeRow.emailCode == req.body.emailCode ? true : false
+      // *--------------------------- 验证码有效期 @判断 -codeHealth
+      const lifespan =
+        Date.parse(new Date()) - Date.parse(codeRow.eCreateTime) <= 300000
+          ? true
+          : false
+      // *--------------------------- 分支判断
+      if (!codeRow || (!validCode && !lifespan)) {
+        // 非法验证
+        res.json({ code: 201, msg: '验证码错误' })
+      } else {
+        if (!validCode && lifespan) {
+          // 验证码错误，但并未锁定
+          codeRow.codeHealth > 1
+            ? res.json({
+                code: 201,
+                msg: '验证码错误',
+              })
+            : res.json({
+                code: 202,
+                msg: '验证码失效，请重新获取',
+              })
+          // codeToDeath -1
+          await accountDao.codeToDeath({
+            emailId: codeRow.emailId,
+            codeHealth: codeRow.codeHealth - 1,
+          })
+        } else if (validCode && !lifespan) {
+          // 验证码过期
+          res.json({
+            code: '203',
+            msg: '验证码已过期，请重新获取',
+          })
+          // codeToDeath 0
+          await accountDao.codeToDeath({
+            emailId: codeRow.emailId,
+            codeHealth: 0,
+          })
+        } else if (validCode && lifespan) {
+          // 验证码合法
+          await accountDao.register({
+            account: req.body.account,
+            pwd: req.body.pwd1,
+            name: '用户' + randomStr('userName'),
+            email: req.body.email,
+            loginTime: new Date(),
+          })
+          // codeToDeath 0
+          await accountDao.codeToDeath({
+            emailId: codeRow.emailId,
+            codeHealth: 0,
+          })
+          const userRow = await accountDao.checkAccountExist(req.body)
+          res.json({
+            code: 200,
+            msg: '注册成功',
+            ...createToken(userRow[0]),
+          })
+        }
       }
     }
   },

@@ -8,7 +8,7 @@ module.exports = {
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 分类下的商品 @查询
   selectCommodity: (data) => {
-    const sql = `select cId,cName,cImg from commodity where cClass=?`
+    const sql = `select cId,cName,cImg from commodity where cClass=? and isGround=1`
     return query(sql, [data.ccId])
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 单个商品 @查询

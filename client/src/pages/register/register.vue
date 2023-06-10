@@ -73,24 +73,27 @@
               placeholder="请输入邮箱"
             />
           </uni-forms-item>
+          <view class="register_form_emailCode">
+            <uni-forms-item name="emailCode">
+              <input
+                class="register_form_emailCode_input"
+                type="text"
+                v-model="registerData.form.emailCode"
+                placeholder="验证码"
+              />
+            </uni-forms-item>
+            <!-- <u-toast ref="uToast"></u-toast> -->
+            <u-code
+              :seconds="registerData.second"
+              ref="uCode"
+              @change="codeChange"
+            ></u-code>
+            <button class="register_form_emailCode_button" @tap="getCode">
+              {{ registerData.tips }}
+            </button>
+          </view>
         </uni-forms>
-        <view class="register_form_emailCode">
-          <input
-            class="register_form_emailCode_input"
-            type="text"
-            v-model="registerData.form.emailCode"
-            placeholder="验证码"
-          />
-          <u-toast ref="uToast"></u-toast>
-          <u-code
-            :seconds="registerData.second"
-            ref="uCode"
-            @change="codeChange"
-          ></u-code>
-          <button class="register_form_emailCode_button" @tap="getCode">
-            {{ registerData.tips }}
-          </button>
-        </view>
+
         <button class="register_form_button" @tap="submitForm">注 册</button>
       </view>
     </view>
@@ -118,10 +121,9 @@ const registerData = reactive({
     account: '19162800030',
     pwd1: '123456789',
     pwd2: '123456789',
-    email: 'm19162800030@gmail.com',
+    email: '2220352016@qq.com',
     emailCode: '',
   },
-  emailCode: '',
   rules: {
     account: {
       rules: [
@@ -131,8 +133,8 @@ const registerData = reactive({
         },
         {
           minLength: 3,
-          maxLength: 10,
-          errorMessage: '长度在 3 到 10 个字符',
+          maxLength: 11,
+          errorMessage: '长度在 3 到 11 个字符',
         },
       ],
     },
@@ -177,6 +179,9 @@ const registerData = reactive({
         },
       ],
     },
+    emailCode: {
+      rules: [{ required: true, errorMessage: '请输入验证码' }],
+    },
   },
   tips: '',
   second: 60,
@@ -194,13 +199,21 @@ const getCode = () => {
       uni.showLoading({
         title: '正在获取验证码',
       })
-      setTimeout(() => {
-        uni.hideLoading()
-        // 这里此提示会被this.start()方法中的提示覆盖
-        uni.$u.toast('验证码已发送')
-        // 通知验证码组件内部开始倒计时
-        proxy.$refs.uCode.start()
-      }, 2000)
+      proxy
+        .$req({
+          url: '/userA/registerCode',
+          method: 'POST',
+          data: { email: registerData.form.email },
+        })
+        .then((res) => {
+          // 这里此提示会被this.start()方法中的提示覆盖
+          uni.$u.toast(res.data.msg)
+          if (res.data.code == 200) {
+            uni.hideLoading()
+            // 通知验证码组件内部开始倒计时
+            proxy.$refs.uCode.start()
+          }
+        })
     } else {
       uni.$u.toast('倒计时结束后再发送')
     }
@@ -210,15 +223,14 @@ const getCode = () => {
 const submitForm = () => {
   proxy.$refs.form
     .validate()
-    .then((res) => {
+    .then((obj) => {
       proxy
-        .$req({ url: '/userA/register', method: 'POST', data: res })
+        .$req({ url: '/userA/register', method: 'POST', data: obj })
         .then((res) => {
-          console.log(res)
           uni.$u.toast(res.data.msg)
           if (res.data.code == 200) {
-            user.addLoginState(res.data.result)
-            uni.switchTab({ url: 'pages/index/index' })
+            user.addLoginState(res.data)
+            uni.switchTab({ url: '/pages/index/index' })
           }
         })
     })
@@ -292,7 +304,7 @@ const submitForm = () => {
   .register_form_emailCode {
     width: 590rpx;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     .register_form_emailCode_input {
       width: 270rpx;

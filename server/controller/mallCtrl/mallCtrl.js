@@ -22,16 +22,11 @@ module.exports = {
     const result = await mallDao.selectCommodity({
       ccId: classifyList[req.body.current].ccId,
     })
-    result.length != 0
-      ? res.json({
-          code: 200,
-          msg: '查询成功',
-          result,
-        })
-      : res.json({
-          code: 201,
-          msg: '服务器响应错误',
-        })
+    res.json({
+      code: 200,
+      msg: '查询成功',
+      result,
+    })
   },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 市集 @查询 商品详情页
   comIntroSelect: async (req, res) => {

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const secretKey = require('../config/tokenConfig')
 
 const createToken = (data) => {
+  console.log(data)
   const token = jwt.sign(
     {
       userId: data.uId,
@@ -14,15 +15,7 @@ const createToken = (data) => {
     },
   )
   return {
-    userInfo: {
-      uId: data.uId,
-      uName: data.uName,
-      uSex: data.uSex,
-      uAvatar: data.uAvatar,
-      uSex: data.uSex,
-      uLevel: data.ulName,
-      uSign: data.uSign,
-    },
+    userInfo: data,
     token,
   }
 }

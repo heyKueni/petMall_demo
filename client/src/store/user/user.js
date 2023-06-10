@@ -10,15 +10,20 @@ const useUser = defineStore('user', {
   actions: {
     // 登录添加用户状态
     addLoginState(data) {
+      console.log(data)
       this.userToken = data.token
       this.userInfo = { ...data.userInfo }
       uni.setStorageSync('token', data.token)
-      // console.log(this.userToken, this.userInfo)
     },
     // 修改用户状态
     updateUserState(data) {
       this.userInfo = { ...data }
       // console.log(this.userInfo)
+    },
+    // 清空用户状态
+    resetLoginState() {
+      this.$reset()
+      uni.removeStorageSync('token')
     },
   },
 })

@@ -12,6 +12,13 @@ module.exports = {
       ? res.json({ code: 200, msg: '修改成功', result })
       : res.json({ code: 201, msg: '服务器响应失败' })
   },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的收藏 @查询 -帖子
+  collectPostSelect: async (req, res) => {
+    const dbData = await mineAndSetDao.collectPostSelect({
+      uId: req.tokenInfo.userId,
+    })
+    res.json({ code: 200, msg: '查询成功', result: [...dbData] })
+  },
   // ?+++++++++++++++++++++++++++++++++++++++++++++++ 我的收藏 @删除
   delCollectCom: async (req, res) => {
     const result = await mineAndSetDao.delCollectCom({
@@ -127,5 +134,71 @@ module.exports = {
     typeof result != 'undefined'
       ? res.json({ code: 200, msg: '修改成功' })
       : res.json({ code: 201, msg: '服务器响应错误' })
+  },
+  // ?+++++++++++++++++++++++++++++++++++++++++++++++ 修改密码
+  changePwd: async (req, res) => {
+    // *--------------------------- 用户邮箱登录的请求信息 @查询 -email -codeHealth
+    const codeDb = await accountDao.checkCodeExist(req.body)
+    const codeRow = codeDb[codeDb.length - 1] || {
+      emailCode: '',
+      eCreateTime: '',
+    }
+    // *--------------------------- 验证码匹配 @判断 -emailCode
+    console.log(codeRow.emailCode)
+    const validCode = codeRow.emailCode == req.body.emailCode ? true : false
+    // *--------------------------- 验证码有效期 @判断 -codeHealth
+    lifespan =
+      Date.parse(new Date()) - Date.parse(codeRow.eCreateTime) <= 300000
+        ? true
+        : false
+    // *--------------------------- 分支判断
+    if (!codeRow || (!validCode && !lifespan)) {
+      // 非法验证
+      res.json({ code: 201, msg: '验证码错误' })
+    } else {
+      if (!validCode && lifespan) {
+        // 验证码错误，但并未锁定
+        codeRow.codeHealth > 1
+          ? res.json({
+              code: 201,
+              msg: '验证码错误',
+            })
+          : res.json({
+              code: 202,
+              msg: '验证码失效，请重新获取',
+            })
+        // codeToDeath -1
+        await accountDao.codeToDeath({
+          emailId: codeRow.emailId,
+          codeHealth: codeRow.codeHealth - 1,
+        })
+      } else if (validCode && !lifespan) {
+        // 验证码过期
+        res.json({
+          code: '203',
+          msg: '验证码已过期，请重新获取',
+        })
+        // codeToDeath 0
+        await accountDao.codeToDeath({
+          emailId: codeRow.emailId,
+          codeHealth: 0,
+        })
+      } else if (validCode && lifespan) {
+        // 验证码合法
+        const userByEmail = await accountDao.checkEmailExistInUser(req.body)
+        console.log(userByEmail)
+        if (userByEmail.length) {
+          const ccccc = await accountDao.changePwd({
+            uId: userByEmail[0].uId,
+            ...req.body,
+          })
+          typeof ccccc != 'undefined'
+            ? res.json({ code: 200, msg: '修改成功' })
+            : res.json({ code: 201, msg: '服务器响应错误' })
+        } else {
+          res.json({ code: 201, msg: '填写信息有误' })
+        }
+      }
+    }
   },
 }

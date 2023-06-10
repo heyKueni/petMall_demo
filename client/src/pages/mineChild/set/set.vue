@@ -96,7 +96,7 @@ const pageState = reactive({
       key: 6,
       name: '修改密码',
       setFn: () => {
-        proxy.$uri.navigateTo({ url: '/pages/mineChild/setEmail/setEmail' })
+        proxy.$uri.navigateTo({ url: '/pages/mineChild/setPwd/setPwd' })
       },
     },
   ],
@@ -113,8 +113,9 @@ onShow(() => {
 // *--------------------------- login
 // out
 function loginOut() {
-  user.$reset()
-  uni.removeStorageSync('token')
+  // user.$reset()
+  // uni.removeStorageSync('token')
+  user.resetLoginState()
   proxy.$uri.navigateTo({ url: '/pages/login/login' })
 }
 // in

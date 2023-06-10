@@ -54,6 +54,34 @@
           </view>
         </view>
       </view>
+      <view class="adoptView" v-else>
+        <view
+          class="postView"
+          v-for="item in collectData.list"
+          :key="item.poId"
+          @tap="toIntroPost(item.poId)"
+        >
+          <view class="pTitle">{{ item.poTitle }}</view>
+          <view class="pIntro">
+            <view class="iAuthor">
+              <view class="iImg">
+                <u--image
+                  :showLoading="true"
+                  :src="item.uAvatar"
+                  width="50rpx"
+                  height="50rpx"
+                  @click="click"
+                  shape="circle"
+                ></u--image>
+              </view>
+              <view class="iName">{{ item.uName }}</view>
+            </view>
+            <view class="iText">
+              <view class="tTime">{{ item.poCreateTime.split('T')[0] }}</view>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
     <view class="empty">
       <u-empty
@@ -110,6 +138,16 @@ const collectRes = () => {
           console.log(collectData.list)
         }
       })
+  } else {
+    proxy
+      .$req({ url: '/userA/collectPostSelect', method: 'GET' })
+      .then((res) => {
+        console.log(res)
+        if (res.data.code == 200 && res.data.result.length) {
+          collectData.list = [...res.data.result]
+          console.log(collectData.list)
+        }
+      })
   }
 }
 // *--------------------------- delCollectCom
@@ -120,6 +158,10 @@ const delCollectCom = (collectCId) => {
       if (res.data.code == 200) collectRes()
       uni.$u.toast(res.data.msg)
     })
+}
+// *--------------------------- toIntroPost
+const toIntroPost = (id) => {
+  proxy.$uri.navigateTo({ url: '/pages/forumChild/post?poId=' + id })
 }
 </script>
 <style lang="scss" scoped>
@@ -180,6 +222,65 @@ const delCollectCom = (collectCId) => {
       background-color: red;
       margin: 0 20rpx 0 0;
     }
+  }
+}
+.postView {
+  width: 700rpx;
+  height: auto;
+  padding: 12rpx 25rpx 30rpx 25rpx;
+  position: relative;
+  border-bottom: 1rpx solid #eee;
+}
+.pAdopt {
+  position: absolute;
+  top: 10rpx;
+  right: 20rpx;
+  color: red;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+.pTitle {
+  width: 700rpx;
+  height: auto;
+  padding: 28rpx 0;
+  font-size: 54rpx;
+  font-weight: 100;
+}
+.pContent {
+  width: 700rpx;
+  height: auto;
+  padding-bottom: 28rpx;
+}
+.pIntro {
+  padding-top: 12rpx;
+  width: 700rpx;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  font-weight: 300;
+}
+.iAuthor {
+  display: flex;
+  align-items: center;
+}
+.iName {
+  padding-left: 20rpx;
+}
+.iText {
+  display: flex;
+  align-items: center;
+  .tLike {
+    display: flex;
+    align-items: center;
+  }
+  .tComment {
+    display: flex;
+    align-items: center;
+    padding-left: 24rpx;
+  }
+  .tTime {
+    padding-left: 24rpx;
   }
 }
 </style>
